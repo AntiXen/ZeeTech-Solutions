@@ -1,0 +1,31 @@
+.signalContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Blend mode ensures it meshes well with the dark background */
+  mix-blend-mode: screen;
+  /* Smooth transition for when mouse moves or leaves */
+  transition: transform 0.1s ease-out;
+}
+
+.svg {
+  width: 120%;
+  height: 120%;
+  max-width: 1200px;
+  max-height: 1200px;
+}
+
+@media (max-width: 768px) {
+  .signalContainer {
+    width: 60%;
+    height: 60%;
+  }
+}

@@ -1,0 +1,20 @@
+.container {
+  display: block;
+  font-family: inherit;
+}
+
+.segment {
+  display: block;
+  line-height: 1.65;
+  max-width: 62ch;
+  margin-bottom: 0.5em;
+  /* color transition is handled by inline styles */
+}
+
+.segment:last-child {
+  margin-bottom: 0;
+}
+
+.primary .segment {
+  color: var(--text-primary);
+}
