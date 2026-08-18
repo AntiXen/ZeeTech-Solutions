@@ -10,3 +10,5 @@ export function Divider({ className }: DividerProps) {
     <div className={`${styles.divider} ${className || ''}`.trim()} aria-hidden="true" />
   );
 }
+
+export default Divider;

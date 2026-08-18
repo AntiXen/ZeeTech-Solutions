@@ -3,9 +3,11 @@
 import React, { useRef } from 'react';
 import { useScroll, MotionValue } from 'framer-motion';
 
+type UseScrollOptions = NonNullable<Parameters<typeof useScroll>[0]>;
+
 interface ScrollProgressProps {
   children: (progress: MotionValue<number>) => React.ReactNode;
-  offset?: [string, string];
+  offset?: UseScrollOptions['offset'];
 }
 
 export function ScrollProgress({
@@ -25,3 +27,5 @@ export function ScrollProgress({
     </div>
   );
 }
+
+export default ScrollProgress;

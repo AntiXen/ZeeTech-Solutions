@@ -1,0 +1,199 @@
+.sceneContainer {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--margin);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+}
+
+.topArea {
+  margin-bottom: 28px;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.headline {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: var(--weight-extrabold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.supportingCopy {
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+/* Timeline Layout */
+.timelineWrapper {
+  position: relative;
+  width: 100%;
+  margin: 32px 0 28px 0;
+}
+
+.lineBg {
+  position: absolute;
+  top: 59px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--divider);
+  z-index: 0;
+}
+
+.lineFill {
+  position: absolute;
+  top: 59px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--accent);
+  transform-origin: left;
+  z-index: 1;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.stepsGrid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.stepCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stepNumber {
+  font-size: clamp(2.2rem, 3.4vw, 3.4rem);
+  font-weight: var(--weight-extrabold);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  height: 44px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 6px;
+}
+
+.dotCell {
+  width: 100%;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--divider-strong);
+  box-sizing: border-box;
+}
+
+.stepHeading {
+  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+  font-weight: var(--weight-bold);
+  margin: 0 0 6px 0;
+  letter-spacing: var(--tracking-tight);
+}
+
+.stepDescription {
+  font-size: clamp(0.85rem, 0.98vw, 0.92rem);
+  line-height: 1.5;
+  margin: 0;
+  padding-right: 8px;
+}
+
+/* Bottom Bar */
+.bottomBar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid var(--divider);
+  padding-top: 20px;
+  flex-wrap: wrap;
+}
+
+.bottomPrompt {
+  font-size: 12px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.pointsList {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.pointTag {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  font-weight: var(--weight-medium);
+}
+
+.pointNum {
+  color: var(--accent);
+  font-weight: var(--weight-bold);
+  font-size: 12px;
+}
+
+@media (max-width: 1024px) {
+  .stepsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .lineBg,
+  .lineFill {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .sceneContainer {
+    padding: 60px 20px 20px;
+  }
+  .stepsGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .bottomBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

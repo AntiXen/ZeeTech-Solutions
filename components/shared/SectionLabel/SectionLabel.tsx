@@ -15,3 +15,5 @@ export function SectionLabel({ number, text }: SectionLabelProps) {
     </div>
   );
 }
+
+export default SectionLabel;

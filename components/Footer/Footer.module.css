@@ -1,0 +1,78 @@
+.footer {
+  background-color: var(--bg-secondary, #111111);
+  padding: 80px 0 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.topSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+
+@media (min-width: 768px) {
+  .topSection {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.brandName {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary, #F0EDE8);
+}
+
+.brandTagline {
+  font-size: 13px;
+  color: var(--text-muted, #555555);
+  margin-top: 8px;
+}
+
+.brandDesc {
+  font-size: 14px;
+  color: var(--text-muted, #555555);
+  max-width: 320px;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.navLinks, .contactLinks {
+  display: flex;
+  flex-direction: column;
+}
+
+.navLinks {
+  gap: 12px;
+}
+
+.contactLinks {
+  gap: 8px;
+}
+
+.link {
+  font-size: 14px;
+  color: var(--text-secondary, #858585);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--text-primary, #F0EDE8);
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--divider, rgba(255, 255, 255, 0.08));
+}
+
+.bottomDivider {
+  margin-top: 40px;
+}
+
+.copyright {
+  font-size: 12px;
+  color: var(--text-muted, #555555);
+  padding-top: 24px;
+}

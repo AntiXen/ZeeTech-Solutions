@@ -1,43 +1,49 @@
 /* ============================================================
    ZeeTech — Design System
    ============================================================
-   A disciplined dark editorial visual system.
-   Typography + composition + scale + whitespace.
+   Technical Architecture: Dark Mode (Default) & Light Mode
+   Electric Volt Green (Dark) & Radiant Orange (Light)
    ============================================================ */
 
-/* --- Design Tokens ----------------------------------------- */
+/* --- Default Dark Theme ------------------------------------ */
 :root {
   /* Backgrounds */
   --bg-primary: #080808;
   --bg-secondary: #111111;
-  --bg-elevated: #171717;
+  --bg-elevated: #161616;
+  --bg-nav: rgba(8, 8, 8, 0.85);
+  --bg-input: #0c0c0c;
 
   /* Text */
-  --text-primary: #F0EDE8;
-  --text-secondary: #858585;
-  --text-muted: #555555;
+  --text-primary: #FFFFFF;
+  --text-secondary: #9E9E9E;
+  --text-muted: #5C5C5C;
+  --text-dim: #2A2A2A;
 
-  /* Accent — electric magenta, used strategically */
-  --accent: #FF1F71;
-  --accent-dim: rgba(255, 31, 113, 0.4);
-  --accent-glow: rgba(255, 31, 113, 0.12);
+  /* Accent — Electric Volt Green */
+  --accent: #22C55E;
+  --accent-dim: rgba(34, 197, 94, 0.4);
+  --accent-glow: rgba(34, 197, 94, 0.22);
+  --accent-soft: rgba(34, 197, 94, 0.08);
 
-  /* Surfaces */
+  /* Surfaces & Dividers */
   --divider: rgba(255, 255, 255, 0.08);
   --divider-strong: rgba(255, 255, 255, 0.14);
+  --divider-faint: rgba(255, 255, 255, 0.04);
+  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 
   /* Layout */
   --max-width: 1440px;
   --margin: 80px;
 
   /* Typography scale — fluid */
-  --size-display-xl: clamp(3.25rem, 7.5vw, 8.5rem);   /* ~52–136px */
-  --size-display: clamp(2.25rem, 5vw, 4.5rem);         /* ~36–72px  */
-  --size-heading: clamp(1.5rem, 3vw, 2.75rem);         /* ~24–44px  */
-  --size-subheading: clamp(1.125rem, 1.8vw, 1.5rem);   /* ~18–24px  */
-  --size-body: clamp(0.9375rem, 1.05vw, 1.125rem);     /* ~15–18px  */
-  --size-small: 0.875rem;                               /* 14px      */
-  --size-label: 0.6875rem;                              /* 11px      */
+  --size-display-xl: clamp(3.25rem, 7.5vw, 8.5rem);
+  --size-display: clamp(2.25rem, 5vw, 4.5rem);
+  --size-heading: clamp(1.5rem, 3vw, 2.75rem);
+  --size-subheading: clamp(1.125rem, 1.8vw, 1.5rem);
+  --size-body: clamp(0.9375rem, 1.05vw, 1.125rem);
+  --size-small: 0.875rem;
+  --size-label: 0.6875rem;
 
   /* Weights */
   --weight-regular: 400;
@@ -79,6 +85,34 @@
   --radius-lg: 12px;
 }
 
+/* --- Clean Light Theme (Radiant Technical Orange) ----------- */
+[data-theme='light'] {
+  /* Backgrounds */
+  --bg-primary: #F8F9FA;
+  --bg-secondary: #FFFFFF;
+  --bg-elevated: #EEF0F2;
+  --bg-nav: rgba(248, 249, 250, 0.85);
+  --bg-input: #F3F4F6;
+
+  /* Text */
+  --text-primary: #0A0A0C;
+  --text-secondary: #52525B;
+  --text-muted: #8E8E98;
+  --text-dim: #D1D1D8;
+
+  /* Accent — Vibrant Radiant Orange */
+  --accent: #FF5500;
+  --accent-dim: rgba(255, 85, 0, 0.4);
+  --accent-glow: rgba(255, 85, 0, 0.22);
+  --accent-soft: rgba(255, 85, 0, 0.08);
+
+  /* Surfaces & Dividers */
+  --divider: rgba(0, 0, 0, 0.08);
+  --divider-strong: rgba(0, 0, 0, 0.14);
+  --divider-faint: rgba(0, 0, 0, 0.04);
+  --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+}
+
 /* --- Tablet ------------------------------------------------ */
 @media (max-width: 1199px) {
   :root {
@@ -93,7 +127,6 @@
   }
 }
 
-
 /* ============================================================
    Reset + Base
    ============================================================ */
@@ -105,6 +138,19 @@
   box-sizing: border-box;
 }
 
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -114,13 +160,7 @@ html {
   color: var(--text-primary);
   font-size: 16px;
   line-height: var(--leading-body);
-
-  /* Hide scrollbar — never disable native scrolling */
-  scrollbar-width: none;          /* Firefox    */
-}
-
-html::-webkit-scrollbar {
-  display: none;                  /* Chromium / Safari */
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 body {
@@ -131,14 +171,14 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Selection */
 ::selection {
   background-color: var(--accent);
-  color: var(--bg-primary);
+  color: #FFFFFF;
 }
-
 
 /* ============================================================
    Typography Defaults
@@ -189,12 +229,9 @@ img, video, svg {
   outline: none;
 }
 
-
 /* ============================================================
-   Utility Classes (minimal, intentional)
+   Utility Classes
    ============================================================ */
-
-/* Section container */
 .section-container {
   width: 100%;
   max-width: var(--max-width);
@@ -204,19 +241,16 @@ img, video, svg {
   padding-right: var(--margin);
 }
 
-/* Accent text */
 .accent {
   color: var(--accent);
 }
 
-/* Section spacing */
 .section {
   padding-top: clamp(80px, 12vh, 160px);
   padding-bottom: clamp(80px, 12vh, 160px);
   position: relative;
 }
 
-/* Label style */
 .label {
   font-size: var(--size-label);
   font-weight: var(--weight-semibold);
@@ -226,7 +260,6 @@ img, video, svg {
   line-height: 1;
 }
 
-/* Display heading */
 .display {
   font-size: var(--size-display-xl);
   font-weight: var(--weight-extrabold);
@@ -241,7 +274,6 @@ img, video, svg {
   line-height: var(--leading-display);
 }
 
-
 /* ============================================================
    Button System
    ============================================================ */
@@ -251,7 +283,7 @@ img, video, svg {
   gap: 8px;
   padding: 14px 28px;
   background-color: var(--accent);
-  color: var(--bg-primary);
+  color: #FFFFFF;
   font-size: var(--size-small);
   font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
@@ -293,11 +325,10 @@ img, video, svg {
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.22);
+  background-color: var(--divider-faint);
+  border-color: var(--divider-strong);
   transform: translateY(-1px);
 }
-
 
 /* ============================================================
    Reduced Motion

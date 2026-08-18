@@ -1,20 +1,21 @@
+.wrapper {
+  display: block;
+  width: 100%;
+}
+
 .container {
-  display: block;
+  display: inline;
   font-family: inherit;
+  line-height: inherit;
 }
 
-.segment {
-  display: block;
-  line-height: 1.65;
-  max-width: 62ch;
-  margin-bottom: 0.5em;
-  /* color transition is handled by inline styles */
+.word {
+  display: inline;
+  white-space: pre-wrap;
+  transition: none; /* Driven entirely by motion value */
 }
 
-.segment:last-child {
-  margin-bottom: 0;
-}
-
-.primary .segment {
+.reducedMotion {
   color: var(--text-primary);
+  opacity: 1;
 }

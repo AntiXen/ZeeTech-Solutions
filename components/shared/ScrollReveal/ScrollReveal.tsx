@@ -40,3 +40,5 @@ export function ScrollReveal({
     </motion.div>
   );
 }
+
+export default ScrollReveal;

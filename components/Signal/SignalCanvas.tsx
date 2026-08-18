@@ -1,113 +1,163 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { motion, useTransform, MotionValue, useReducedMotion } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import styles from './Signal.module.css';
 
-interface SignalCanvasProps {
-  scrollProgress: MotionValue<number>;
-}
-
-export default function SignalCanvas({ scrollProgress }: SignalCanvasProps) {
+export default function SignalCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isTouch, setIsTouch] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReduced = useReducedMotion();
 
-  // Scroll transforms
-  const opacity = useTransform(scrollProgress, [0, 1], [1, 0.3]);
-  const rotation = useTransform(scrollProgress, [0, 1], [0, 8]);
-  const scale = useTransform(scrollProgress, [0, 1], [1, 0.95]);
-
+  // Parallax pointer tracking
   useEffect(() => {
-    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
+    if (prefersReduced) return;
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (isTouch) return;
 
-  useEffect(() => {
-    if (isTouch || prefersReducedMotion) return;
+    const el = containerRef.current;
+    if (!el) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 30; // max shift ±15px
-      const y = (e.clientY / innerHeight - 0.5) * 30;
-      setMousePos({ x, y });
+      const x = (e.clientX / innerWidth - 0.5) * 24;
+      const y = (e.clientY / innerHeight - 0.5) * 24;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isTouch, prefersReducedMotion]);
-
-  const xOffset = prefersReducedMotion ? 0 : mousePos.x;
-  const yOffset = prefersReducedMotion ? 0 : mousePos.y;
+  }, [prefersReduced]);
 
   return (
-    <motion.div 
+    <div
       ref={containerRef}
       className={styles.signalContainer}
-      style={{
-        opacity: prefersReducedMotion ? 1 : opacity,
-        scale: prefersReducedMotion ? 1 : scale,
-        x: xOffset,
-        y: yOffset
-      }}
+      aria-hidden="true"
     >
-      <motion.svg 
-        viewBox="0 0 1200 1200" 
+      <svg
+        viewBox="0 0 1000 1000"
         className={styles.svg}
-        style={{
-          rotate: prefersReducedMotion ? 0 : rotation
-        }}
       >
         <defs>
-          <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#FF1F71" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#FF1F71" stopOpacity="0" />
+          <radialGradient id="signalGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.22" />
+            <stop offset="45%" stopColor="var(--accent)" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
           </radialGradient>
+          <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.35" />
+            <stop offset="50%" stopColor="var(--accent)" stopOpacity="0.06" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.25" />
+          </linearGradient>
         </defs>
 
-        {/* Center Glow */}
-        <circle cx="600" cy="600" r="200" fill="url(#centerGlow)" />
+        {/* Central Core Glow with subtle breathing pulse */}
+        <motion.circle 
+          cx="500" 
+          cy="500" 
+          r="280" 
+          fill="url(#signalGlow)"
+          animate={prefersReduced ? undefined : { scale: [1, 1.06, 1], opacity: [0.85, 1, 0.85] }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: '500px 500px' }}
+        />
 
         {/* Coordinate Grid Lines */}
-        <line x1="600" y1="0" x2="600" y2="1200" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-        <line x1="0" y1="600" x2="1200" y2="600" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+        <line x1="200" y1="500" x2="800" y2="500" stroke="var(--divider)" strokeWidth="0.75" />
+        <line x1="500" y1="200" x2="500" y2="800" stroke="var(--divider)" strokeWidth="0.75" />
 
-        {/* Orbital Rings */}
-        <ellipse cx="600" cy="600" rx="200" ry="120" stroke="rgba(255,31,113,0.15)" strokeWidth="1" fill="none" transform="rotate(15 600 600)" />
-        <ellipse cx="600" cy="600" rx="320" ry="200" stroke="rgba(255,31,113,0.12)" strokeWidth="0.8" fill="none" transform="rotate(-10 600 600)" />
-        <ellipse cx="600" cy="600" rx="450" ry="280" stroke="rgba(255,31,113,0.1)" strokeWidth="0.6" fill="none" transform="rotate(25 600 600)" />
-        <ellipse cx="600" cy="600" rx="600" ry="380" stroke="rgba(255,31,113,0.08)" strokeWidth="0.5" fill="none" transform="rotate(-5 600 600)" />
+        {/* Orbital Ring 1: Continuous Clockwise Spin */}
+        <motion.ellipse
+          cx="500"
+          cy="500"
+          rx="180"
+          ry="175"
+          fill="none"
+          stroke="url(#orbitGrad)"
+          strokeWidth="0.85"
+          animate={prefersReduced ? undefined : { rotate: 360 }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+          style={{ transformOrigin: '500px 500px' }}
+        />
 
-        {/* Trajectory Lines (Beziers) */}
-        <path d="M 600 600 C 700 400, 900 300, 1100 200" stroke="rgba(255,31,113,0.1)" strokeWidth="0.5" fill="none" strokeDasharray="10 5" />
-        <path d="M 600 600 C 400 700, 300 900, 100 1100" stroke="rgba(255,31,113,0.1)" strokeWidth="0.5" fill="none" strokeDasharray="15 10" />
-        <path d="M 600 600 C 800 800, 1000 900, 1150 1000" stroke="rgba(255,31,113,0.1)" strokeWidth="0.5" fill="none" strokeDasharray="12 6" />
-        <path d="M 600 600 C 500 400, 300 200, 150 100" stroke="rgba(255,31,113,0.1)" strokeWidth="0.5" fill="none" strokeDasharray="8 4" />
-        <path d="M 600 600 C 750 650, 950 500, 1100 400" stroke="rgba(255,31,113,0.1)" strokeWidth="0.5" fill="none" strokeDasharray="20 10" />
+        {/* Orbital Ring 2 (Dashed): Continuous Counter-Clockwise Spin */}
+        <motion.ellipse
+          cx="500"
+          cy="500"
+          rx="300"
+          ry="290"
+          fill="none"
+          stroke="var(--accent)"
+          strokeOpacity="0.25"
+          strokeWidth="1"
+          strokeDasharray="4 8"
+          animate={prefersReduced ? undefined : { rotate: -360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+          style={{ transformOrigin: '500px 500px' }}
+        />
 
-        {/* Nodes */}
-        <circle cx="782" cy="510" r="2.5" fill="rgba(255,31,113,0.6)" />
-        <circle cx="430" cy="710" r="2" fill="rgba(255,31,113,0.3)" />
-        <circle cx="890" cy="760" r="3" fill="rgba(255,31,113,0.6)" />
-        <circle cx="340" cy="380" r="2" fill="rgba(255,31,113,0.3)" />
-        <circle cx="950" cy="480" r="2.5" fill="rgba(255,31,113,0.3)" />
-        <circle cx="680" cy="320" r="2" fill="rgba(255,31,113,0.3)" />
-        <circle cx="480" cy="850" r="2" fill="rgba(255,31,113,0.6)" />
-        <circle cx="210" cy="580" r="2" fill="rgba(255,31,113,0.3)" />
-        <circle cx="1020" cy="340" r="2.5" fill="rgba(255,31,113,0.3)" />
+        {/* Orbital Ring 3 (Outer): Continuous Clockwise Spin */}
+        <motion.ellipse
+          cx="500"
+          cy="500"
+          rx="420"
+          ry="400"
+          fill="none"
+          stroke="var(--accent)"
+          strokeOpacity="0.15"
+          strokeWidth="0.75"
+          animate={prefersReduced ? undefined : { rotate: 360 }}
+          transition={{ duration: 58, repeat: Infinity, ease: 'linear' }}
+          style={{ transformOrigin: '500px 500px' }}
+        />
 
-        {/* Cross Marks */}
-        <g stroke="var(--text-muted, #555555)" strokeWidth="1" opacity="0.3">
-          <line x1="777" y1="510" x2="787" y2="510" />
-          <line x1="782" y1="505" x2="782" y2="515" />
-          
-          <line x1="335" y1="380" x2="345" y2="380" />
-          <line x1="340" y1="375" x2="340" y2="385" />
+        {/* Trajectory Beziers: Continuous Counter-Clockwise Spin */}
+        <motion.g
+          animate={prefersReduced ? undefined : { rotate: -360 }}
+          transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
+          style={{ transformOrigin: '500px 500px' }}
+        >
+          <path
+            d="M 260 500 C 260 360, 360 260, 500 260 C 640 260, 740 360, 740 500"
+            fill="none"
+            stroke="var(--accent)"
+            strokeOpacity="0.22"
+            strokeWidth="0.75"
+            strokeDasharray="6 12"
+          />
+          <path
+            d="M 320 620 C 400 700, 600 700, 680 620"
+            fill="none"
+            stroke="var(--accent)"
+            strokeOpacity="0.15"
+            strokeWidth="0.5"
+          />
+        </motion.g>
 
-          <line x1="885" y1="760" x2="895" y2="760" />
-          <line x1="890" y1="755" x2="890" y2="765" />
+        {/* Signal Orbiting Nodes: Continuous Clockwise Spin */}
+        <motion.g
+          animate={prefersReduced ? undefined : { rotate: 360 }}
+          transition={{ duration: 36, repeat: Infinity, ease: 'linear' }}
+          style={{ transformOrigin: '500px 500px' }}
+        >
+          <circle cx="500" cy="320" r="3.5" fill="var(--accent)" opacity="0.9" />
+          <circle cx="680" cy="500" r="3" fill="var(--accent)" opacity="0.75" />
+          <circle cx="320" cy="500" r="2.5" fill="var(--accent)" opacity="0.6" />
+          <circle cx="500" cy="680" r="4" fill="var(--accent)" opacity="0.85" />
+          <circle cx="390" cy="390" r="2.5" fill="var(--accent)" opacity="0.7" />
+          <circle cx="610" cy="610" r="3" fill="var(--accent)" opacity="0.7" />
+        </motion.g>
+
+        {/* Technical Crosshairs */}
+        <g stroke="var(--accent)" strokeOpacity="0.5" strokeWidth="0.75">
+          <line x1="494" y1="500" x2="506" y2="500" />
+          <line x1="500" y1="494" x2="500" y2="506" />
         </g>
-      </motion.svg>
-    </motion.div>
+        <g stroke="var(--text-muted)" strokeWidth="0.5">
+          <line x1="675" y1="325" x2="685" y2="325" />
+          <line x1="680" y1="320" x2="680" y2="330" />
+        </g>
+      </svg>
+    </div>
   );
 }

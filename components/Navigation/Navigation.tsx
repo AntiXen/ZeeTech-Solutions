@@ -5,19 +5,84 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Navigation.module.css';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
+import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
 
-const links = [
-  { href: '#work', label: 'Work' },
-  { href: '#capabilities', label: 'Capabilities' },
-  { href: '#approach', label: 'Approach' },
-  { href: '#about', label: 'About' },
+const navLinks = [
+  { href: '#work', label: 'Work', id: 'work' },
+  { href: '#capabilities', label: 'Capabilities', id: 'capabilities' },
+  { href: '#approach', label: 'Approach', id: 'approach' },
+  { href: '#about', label: 'About', id: 'about' },
 ];
+
+const allSectionIds = ['hero', 'proposition', 'capabilities', 'build', 'work', 'approach', 'about', 'manifesto', 'technology', 'contact'];
+
+function ThemeToggleButton({ className }: { className?: string }) {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className={`${styles.themeToggle} ${className || ''}`}
+      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === 'dark' ? (
+          <motion.svg
+            key="sun"
+            viewBox="0 0 24 24"
+            width="17"
+            height="17"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ opacity: 0, rotate: -45, scale: 0.7 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ opacity: 0, rotate: 45, scale: 0.7 }}
+            transition={{ duration: 0.2 }}
+          >
+            <circle cx="12" cy="12" r="4" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </motion.svg>
+        ) : (
+          <motion.svg
+            key="moon"
+            viewBox="0 0 24 24"
+            width="17"
+            height="17"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ opacity: 0, rotate: 45, scale: 0.7 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ opacity: 0, rotate: -45, scale: 0.7 }}
+            transition={{ duration: 0.2 }}
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </motion.svg>
+        )}
+      </AnimatePresence>
+    </button>
+  );
+}
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const overlayRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,7 +90,7 @@ export default function Navigation() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check initial scroll position
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -41,17 +106,18 @@ export default function Navigation() {
           }
         });
       },
-      { rootMargin: '-50% 0px -50% 0px' }
+      { rootMargin: '-30% 0px -50% 0px' }
     );
 
-    const sections = links.map(link => document.getElementById(link.href.substring(1))).filter(Boolean);
-    sections.forEach(section => {
-      if (section) observer.observe(section);
+    allSectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
     });
 
     return () => {
-      sections.forEach(section => {
-        if (section) observer.unobserve(section);
+      allSectionIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
       });
     };
   }, []);
@@ -60,7 +126,6 @@ export default function Navigation() {
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
-      // Fallback for accessibility if main element is not specifically structured
       const main = document.querySelector('main');
       if (main) {
         main.setAttribute('inert', '');
@@ -83,7 +148,7 @@ export default function Navigation() {
   }, [isMenuOpen]);
 
   const toggleMenu = () => {
-    setIsMenuOpen(prev => !prev);
+    setIsMenuOpen((prev) => !prev);
   };
 
   const closeMenu = () => {
@@ -99,8 +164,8 @@ export default function Navigation() {
 
         <div className={styles.desktopNav}>
           <div className={styles.navLinks}>
-            {links.map((link) => {
-              const isActive = activeSection === link.href.substring(1);
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
               return (
                 <Link
                   key={link.href}
@@ -120,18 +185,25 @@ export default function Navigation() {
               );
             })}
           </div>
-          <Link href="#contact" className={styles.cta}>
+
+          {/* Theme Switcher */}
+          <ThemeToggleButton />
+
+          <Link 
+            href="#contact" 
+            className={`${styles.cta} ${activeSection === 'contact' ? styles.ctaActive : ''}`}
+          >
             Start a conversation
           </Link>
         </div>
 
         <div className={styles.mobileNav}>
+          <ThemeToggleButton className={styles.mobileThemeToggle} />
           <button
             className={styles.menuBtn}
             onClick={toggleMenu}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
-            style={{ position: isMenuOpen ? 'relative' : 'static' }}
           >
             {isMenuOpen ? 'Close' : 'Menu'}
           </button>
@@ -154,7 +226,7 @@ export default function Navigation() {
           >
             <div className={styles.mobileMenuInner}>
               <div className={styles.mobileLinks}>
-                {[...links, { href: '#contact', label: 'Contact' }].map((link) => (
+                {[...navLinks, { href: '#contact', label: 'Contact', id: 'contact' }].map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
@@ -166,15 +238,21 @@ export default function Navigation() {
                 ))}
               </div>
               <div className={styles.mobileDivider} />
-              <a
-                href={getWhatsAppUrl()}
-                className={styles.mobileContact}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={closeMenu}
-              >
-                WhatsApp — Instant response ↗
-              </a>
+              
+              <div className={styles.mobileMenuBottom}>
+                <a
+                  href={getWhatsAppUrl()}
+                  className={styles.mobileContact}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={closeMenu}
+                >
+                  WhatsApp — Instant response ↗
+                </a>
+                <span className={styles.mobileThemeLabel}>
+                  Theme: {theme === 'dark' ? 'Dark' : 'Light'}
+                </span>
+              </div>
             </div>
           </motion.div>
         )}
