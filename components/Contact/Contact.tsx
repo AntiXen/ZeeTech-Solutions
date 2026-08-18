@@ -44,7 +44,7 @@ function ContactSceneContent({ progress }: { progress: MotionValue<number> }) {
           {/* Left Column: Heading & Editorial Narrative */}
           <div className={styles.leftCol}>
             <span className={styles.label}>
-              <span className={styles.accent}>10</span> — START A CONVERSATION
+              <span className={styles.accent}>11</span> — START A CONVERSATION
             </span>
 
             <h2 className={styles.headline}>

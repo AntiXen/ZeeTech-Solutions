@@ -163,7 +163,7 @@ function TechnologySceneContent({ progress }: { progress: MotionValue<number> })
       <div className={styles.container}>
         <div className={styles.topArea}>
           <span className={styles.label}>
-            <span className={styles.accent}>09</span> — TECHNOLOGY
+            <span className={styles.accent}>10</span> — TECHNOLOGY
           </span>
           <h2 className={styles.headline}>
             The right tool for the <motion.span style={{ color: accentColor }}>problem</motion.span>.<br />

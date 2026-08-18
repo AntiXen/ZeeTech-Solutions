@@ -1,0 +1,284 @@
+.sceneContainer {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 80px var(--margin) 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.headline {
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-weight: var(--weight-extrabold);
+  line-height: 1.02;
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.reviewPills {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.reviewPill {
+  background: transparent;
+  border: 1px solid var(--divider);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  cursor: pointer;
+  letter-spacing: var(--tracking-label);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease, background-color var(--duration-fast) ease;
+}
+
+.reviewPillActive {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  background-color: var(--accent-soft);
+}
+
+.stage {
+  width: 100%;
+}
+
+.reviewCard {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  min-height: 380px;
+  position: relative;
+}
+
+/* Left: Large Editorial Quote & Outcomes */
+.quoteArea {
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  border-right: 1px solid var(--divider);
+  box-sizing: border-box;
+}
+
+.quoteHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.verifiedBadge {
+  font-size: 10.5px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  background-color: var(--accent-soft);
+  border: 1px solid var(--accent-dim);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.verifiedDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  display: inline-block;
+}
+
+.quoteText {
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
+  font-weight: var(--weight-medium);
+  line-height: 1.45;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+  font-style: italic;
+}
+
+.metricStrip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.metricTag {
+  font-size: 12px;
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--divider);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.metricTagAccent {
+  color: var(--accent);
+  font-weight: var(--weight-bold);
+}
+
+/* Right: Client Profile & Project Context */
+.profileArea {
+  padding: 32px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bg-elevated);
+  box-sizing: border-box;
+}
+
+.authorBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.authorRoleTag {
+  font-size: 10px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.authorName {
+  font-size: 1.35rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: var(--tracking-tight);
+}
+
+.authorTitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.authorLocation {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.projectContext {
+  padding-top: 16px;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contextLabel {
+  font-size: 9.5px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.contextValue {
+  font-size: 12.5px;
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contextScope {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.38;
+}
+
+@media (max-width: 1024px) {
+  .sceneContainer {
+    padding: 80px 20px 20px;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .reviewCard {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .quoteArea {
+    border-right: none;
+    border-bottom: 1px solid var(--divider);
+    padding: 24px;
+  }
+  .profileArea {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sceneContainer {
+    padding: 70px 16px 16px;
+  }
+  .quoteText {
+    font-size: 1.15rem;
+  }
+  .quoteArea {
+    padding: 18px;
+  }
+  .profileArea {
+    padding: 18px;
+  }
+}
