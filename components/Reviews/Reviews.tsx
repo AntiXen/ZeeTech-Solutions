@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, useTransform, useMotionValueEvent, AnimatePresence, MotionValue } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Quote, CheckCircle2, Star, Building2, MapPin, TrendingUp } from 'lucide-react';
+import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
 import styles from './Reviews.module.css';
-import PinnedScene from '@/components/shared/PinnedScene/PinnedScene';
-import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
 
 interface Review {
+  id: string;
   number: string;
   clientName: string;
   clientTitle: string;
@@ -14,164 +15,200 @@ interface Review {
   location: string;
   quote: string;
   keyMetric: string;
+  metricLabel: string;
   projectAssociation: string;
   projectScope: string;
+  stars: number;
 }
 
 const reviews: Review[] = [
   {
+    id: 'meridian',
     number: '01',
     clientName: 'Marcus Vance',
     clientTitle: 'Chief Technology Officer',
     clientCompany: 'Meridian Payments Group',
-    location: 'London · Global',
+    location: 'London · Global Deployment',
     quote:
       'ZeeTech didn’t just write code — they challenged our architectural assumptions, eliminated months of technical debt, and built a payment infrastructure that processes millions with sub-50ms latency.',
-    keyMetric: '4× Throughput · Sub-50ms Latency',
+    keyMetric: '4× Scale · Sub-50ms Latency',
+    metricLabel: 'Transaction Capacity & Speed',
     projectAssociation: '01 MERIDIAN',
-    projectScope: 'Event-Driven Financial Architecture & Core Platform'
+    projectScope: 'Event-Driven Financial Microservices & Core Platform',
+    stars: 5,
   },
   {
+    id: 'fieldos',
     number: '02',
     clientName: 'Sarah Jenkins',
     clientTitle: 'VP of Operations',
     clientCompany: 'FieldOS Logistics',
-    location: 'Austin, TX · USA',
+    location: 'Austin, TX · North America',
     quote:
       'Before ZeeTech, our dispatch and field teams were trapped in disconnected spreadsheets and chat groups. They delivered a unified web and mobile platform that cut our coordination overhead in half.',
-    keyMetric: '50% Overhead Reduction · Real-time Fleet Sync',
+    keyMetric: '50% Overhead Reduction · 96.8% On-Time',
+    metricLabel: 'Dispatch Efficiency & Fleet Sync',
     projectAssociation: '02 FIELDOS',
-    projectScope: 'Real-Time Dispatch Engine & Offline-First Mobile Suite'
+    projectScope: 'Real-Time Dispatch Engine & Offline-First Mobile Suite',
+    stars: 5,
   },
   {
+    id: 'northstar',
     number: '03',
     clientName: 'David Lindqvist',
     clientTitle: 'Managing Director',
     clientCompany: 'Northstar Distribution',
-    location: 'Stockholm · Sweden',
+    location: 'Stockholm · Nordic Region',
     quote:
       'The team’s ability to grasp complex distributor pricing models and translate them into a frictionless digital commerce storefront was exceptional. They think and execute like true technical co-founders.',
-    keyMetric: 'Automated ERP Sync · Multi-Tier Catalogues',
+    keyMetric: '+140% Digital Reorders · 50K+ SKUs',
+    metricLabel: 'Commerce Velocity & Volume',
     projectAssociation: '03 NORTHSTAR',
-    projectScope: 'Enterprise B2B Commerce Platform & ERP Integration'
-  }
+    projectScope: 'Enterprise B2B Commerce Platform & ERP Integration',
+    stars: 5,
+  },
 ];
 
-function ReviewsSceneContent({ progress }: { progress: MotionValue<number> }) {
+export default function Reviews() {
   const [activeReview, setActiveReview] = useState(0);
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
 
-  const accentColor = useTransform(
-    progress,
-    [0.08, 0.4],
-    [isDark ? '#555555' : '#8E8E98', isDark ? '#22C55E' : '#FF5500']
-  );
+  useEffect(() => {
+    if (isReducedMotion()) return;
 
-  useMotionValueEvent(progress, 'change', (latest) => {
-    let reviewIdx = 0;
-    if (latest < 0.333) {
-      reviewIdx = 0;
-    } else if (latest < 0.666) {
-      reviewIdx = 1;
-    } else {
-      reviewIdx = 2;
-    }
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        headerRef.current,
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    }, sectionRef);
 
-    if (reviewIdx !== activeReview) {
-      setActiveReview(reviewIdx);
-    }
-  });
+    return () => ctx.revert();
+  }, []);
 
-  const currentReview = reviews[activeReview];
+  const current = reviews[activeReview];
 
   return (
-    <div className={styles.sceneContainer}>
-      <div className={styles.container}>
-        {/* Section Header */}
-        <div className={styles.header}>
-          <div className={styles.headerLeft}>
-            <span className={styles.label}>
-              <span className={styles.accent}>09</span> — CLIENT PERSPECTIVES
-            </span>
+    <section id="reviews" ref={sectionRef} className={`section ${styles.reviewsSection}`}>
+      <div className="section-container">
+        {/* Header */}
+        <div ref={headerRef} className={styles.sectionHeader}>
+          <div>
+            <div className="label-eyebrow">
+              <span className="label-dot" />
+              <span>09 — CLIENT PERSPECTIVES</span>
+            </div>
             <h2 className={styles.headline}>
-              Conviction in the thinking. <motion.span style={{ color: accentColor }}>Proven in production.</motion.span>
+              Conviction in the architecture.{' '}
+              <span className={styles.accentText}>Proven by executives.</span>
             </h2>
           </div>
 
+          {/* Project Switcher Pills */}
           <div className={styles.reviewPills}>
-            {reviews.map((r, i) => (
-              <button
-                key={`${r.number}-${theme}`}
-                onClick={() => setActiveReview(i)}
-                className={`${styles.reviewPill} ${i === activeReview ? styles.reviewPillActive : ''}`}
-              >
-                {r.projectAssociation}
-              </button>
-            ))}
+            {reviews.map((r, idx) => {
+              const isActive = idx === activeReview;
+              return (
+                <button
+                  key={r.id}
+                  onClick={() => setActiveReview(idx)}
+                  className={`${styles.reviewPill} ${isActive ? styles.reviewPillActive : ''}`}
+                  role="tab"
+                  aria-selected={isActive}
+                >
+                  <span>{r.projectAssociation}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeReviewIndicator"
+                      className={styles.activePillGlow}
+                      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Dynamic Testimonial Stage */}
-        <div className={styles.stage}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`review-${activeReview}-${theme}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className={styles.reviewCard}
-            >
-              {/* Left: Editorial Quote & Outcome Tag */}
-              <div className={styles.quoteArea}>
-                <div className={styles.quoteHeader}>
-                  <div className={styles.verifiedBadge}>
-                    <span className={styles.verifiedDot} /> Verified Client Outcome
-                  </div>
+        {/* Dynamic Testimonial Stage Card */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.id}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            className={styles.reviewCard}
+          >
+            {/* Left: Editorial Quote & Outcome */}
+            <div className={styles.quoteCol}>
+              <div className={styles.cardTop}>
+                <div className={styles.verifiedTag}>
+                  <CheckCircle2 size={15} className={styles.verifiedIcon} />
+                  <span>Verified Executive Endorsement</span>
                 </div>
+                <div className={styles.starsRow}>
+                  {[...Array(current.stars)].map((_, i) => (
+                    <Star key={i} size={15} className={styles.starIcon} fill="currentColor" />
+                  ))}
+                </div>
+              </div>
 
+              <div className={styles.quoteBody}>
+                <Quote size={28} className={styles.quoteGlyph} />
                 <blockquote className={styles.quoteText}>
-                  &ldquo;{currentReview.quote}&rdquo;
+                  &ldquo;{current.quote}&rdquo;
                 </blockquote>
+              </div>
 
-                <div className={styles.metricStrip}>
-                  <span className={styles.metricTag}>
-                    <span className={styles.metricTagAccent}>Outcome Impact:</span> {currentReview.keyMetric}
-                  </span>
+              <div className={styles.outcomeImpactBox}>
+                <div className={styles.impactIcon}>
+                  <TrendingUp size={18} />
+                </div>
+                <div>
+                  <div className={styles.impactValue}>{current.keyMetric}</div>
+                  <div className={styles.impactLabel}>{current.metricLabel}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Executive Identity & Project Context */}
+            <div className={styles.identityCol}>
+              <div className={styles.authorBlock}>
+                <span className={styles.authorBadge}>EXECUTIVE SPONSOR</span>
+                <h3 className={styles.authorName}>{current.clientName}</h3>
+                <p className={styles.authorTitle}>{current.clientTitle}</p>
+                <div className={styles.companyRow}>
+                  <Building2 size={15} className={styles.metaIcon} />
+                  <span>{current.clientCompany}</span>
+                </div>
+                <div className={styles.locationRow}>
+                  <MapPin size={15} className={styles.metaIcon} />
+                  <span>{current.location}</span>
                 </div>
               </div>
 
-              {/* Right: Client Executive Profile & Project Scope */}
-              <div className={styles.profileArea}>
-                <div className={styles.authorBlock}>
-                  <span className={styles.authorRoleTag}>Leadership Endorsement</span>
-                  <h3 className={styles.authorName}>{currentReview.clientName}</h3>
-                  <div className={styles.authorTitle}>
-                    {currentReview.clientTitle}, {currentReview.clientCompany}
-                  </div>
-                  <div className={styles.authorLocation}>{currentReview.location}</div>
-                </div>
-
-                <div className={styles.projectContext}>
-                  <span className={styles.contextLabel}>Delivered Solution</span>
-                  <div className={styles.contextValue}>{currentReview.projectAssociation}</div>
-                  <div className={styles.contextScope}>{currentReview.projectScope}</div>
-                </div>
+              <div className={styles.projectContext}>
+                <div className={styles.contextHeader}>DELIVERED SYSTEM ARCHITECTURE</div>
+                <div className={styles.contextProject}>{current.projectAssociation}</div>
+                <p className={styles.contextScope}>{current.projectScope}</p>
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </div>
-  );
-}
-
-export default function Reviews() {
-  const { theme } = useTheme();
-  return (
-    <PinnedScene id="reviews" trackHeight="200vh">
-      {(progress) => <ReviewsSceneContent key={theme} progress={progress} />}
-    </PinnedScene>
+    </section>
   );
 }

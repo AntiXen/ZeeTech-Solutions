@@ -1,67 +1,49 @@
 .fab {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 10;
-  display: flex;
+  bottom: 28px;
+  right: 28px;
+  z-index: var(--z-nav);
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: var(--bg-elevated, #171717);
-  border: 1px solid var(--divider, rgba(255,255,255,0.08));
-  color: var(--text-primary, #F0EDE8);
-  padding: 10px 16px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 500;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
-  transition: all 0.25s ease;
+  padding: 12px 20px;
+  background-color: #25D366;
+  color: #FFFFFF;
+  font-size: var(--size-small);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.4);
   opacity: 0;
-  transform: scale(0.9) translateY(20px);
+  transform: translateY(20px) scale(0.9);
   pointer-events: none;
+  transition: opacity var(--duration-normal) var(--ease-out),
+              transform var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-fast) ease;
 }
 
 .fab.visible {
   opacity: 1;
-  transform: scale(1) translateY(0);
+  transform: translateY(0) scale(1);
   pointer-events: auto;
 }
 
 .fab:hover {
-  border-color: var(--accent);
-  color: var(--text-primary);
-  box-shadow: 0 6px 24px var(--accent-soft);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 36px rgba(37, 211, 102, 0.55);
 }
 
-.whatsappIcon {
-  color: var(--accent);
-  fill: var(--accent);
+.icon {
   flex-shrink: 0;
-  transition: transform 0.25s ease;
-}
-
-.fab:hover .whatsappIcon {
-  transform: scale(1.1);
 }
 
 .fabText {
-  color: var(--text-secondary);
-  font-size: 13px;
-  font-weight: var(--weight-medium);
-  transition: color var(--duration-fast) ease;
+  white-space: nowrap;
 }
 
-.fab:hover .fabText {
-  color: var(--text-primary);
-}
-
-@media (max-width: 767px) {
+@media (max-width: 600px) {
   .fab {
-    padding: 12px;
-    border-radius: 50%;
-  }
-  .fabText {
-    display: none;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 16px;
   }
 }

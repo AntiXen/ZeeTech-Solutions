@@ -128,7 +128,7 @@ function buildConfirmationEmail(name: string): string {
       ${whatsappUrl ? `
       <p style="font-size: 14px; line-height: 1.6; color: #777; margin-top: 32px; padding-top: 24px; border-top: 1px solid #eee;">
         Need a faster response?<br>
-        <a href="${whatsappUrl}" style="color: #FF1F71; text-decoration: none; font-weight: 600;">Chat with ZeeTech on WhatsApp →</a>
+        <a href="${whatsappUrl}" style="color: #10B981; text-decoration: none; font-weight: 600;">Chat with ZeeTech on WhatsApp →</a>
       </p>
       ` : ''}
       

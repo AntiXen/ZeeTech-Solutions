@@ -12,38 +12,165 @@ const interTight = Inter_Tight({
   display: 'swap',
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://zeetech.com';
+
 export const metadata: Metadata = {
-  title: 'ZeeTech — Strategic Technology Partner',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'ZeeTech — Strategic Technology & Engineering Partner',
+    template: '%s | ZeeTech',
+  },
   description:
-    'From product design and software development to growth and long-term support, ZeeTech helps ambitious businesses turn ideas into technology that works.',
+    'ZeeTech is a premium technology and software engineering partner. We architect, design, and build high-performance web platforms, SaaS products, fintech microservices, and mobile applications for ambitious ventures worldwide.',
   keywords: [
-    'software development',
-    'technology partner',
-    'product design',
-    'web development',
-    'mobile development',
-    'Dhaka',
-    'Bangladesh',
+    'software engineering agency',
+    'strategic technology partner',
+    'custom software development',
+    'SaaS platform development',
+    'fintech infrastructure',
+    'full-stack engineering',
+    'product design UI UX',
+    'Next.js development',
+    'Flutter mobile development',
+    'cloud architecture AWS',
+    'Dhaka software agency',
+    'ZeeTech',
   ],
+  authors: [{ name: 'Amit Ghosh', url: siteUrl }],
+  creator: 'ZeeTech Solutions',
+  publisher: 'ZeeTech Solutions',
+  formatDetection: {
+    email: true,
+    address: true,
+    telephone: true,
+  },
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'ZeeTech — Strategic Technology Partner',
+    title: 'ZeeTech — Strategic Technology & Engineering Partner',
     description:
-      'From product design and software development to growth and long-term support, ZeeTech helps ambitious businesses turn ideas into technology that works.',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://zeetech.com',
+      'We architect, design, and build high-performance web platforms, SaaS products, fintech microservices, and mobile applications that move businesses forward.',
+    url: siteUrl,
     siteName: 'ZeeTech',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/meridian_case_study_presentation.png',
+        width: 1200,
+        height: 630,
+        alt: 'ZeeTech — Strategic Technology Partner',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ZeeTech — Strategic Technology Partner',
+    title: 'ZeeTech — Strategic Technology & Engineering Partner',
     description:
-      'From product design and software development to growth and long-term support, ZeeTech helps ambitious businesses turn ideas into technology that works.',
+      'From product design and software development to growth and long-term support, ZeeTech turns ambitious ideas into scalable technology.',
+    images: ['https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/meridian_case_study_presentation.png'],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: 'ZeeTech Solutions',
+      url: siteUrl,
+      logo: `${siteUrl}/favicon.ico`,
+      founder: {
+        '@type': 'Person',
+        name: 'Amit Ghosh',
+        jobTitle: 'Founder and CEO',
+      },
+      sameAs: [
+        'https://linkedin.com/company/zeetech',
+        'https://github.com/zeetech',
+      ],
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Dhaka',
+        addressCountry: 'BD',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        email: 'hello@zeetech.com',
+        availableLanguage: ['English', 'Bengali'],
+      },
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${siteUrl}/#service`,
+      name: 'ZeeTech Software & Product Engineering',
+      url: siteUrl,
+      description:
+        'Strategic technology partner providing full-stack software development, UI/UX product design, enterprise cloud architecture, and growth optimization.',
+      provider: {
+        '@id': `${siteUrl}/#organization`,
+      },
+      areaServed: 'Worldwide',
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'ZeeTech Core Capabilities',
+        itemListElement: [
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Full-Stack Software Development',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'UI/UX & Product Design Architecture',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Fintech & Event-Driven Microservices',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Cloud Native DevOps & SLA Support',
+            },
+          },
+        ],
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'ZeeTech',
+      description: 'Strategic Technology Partner for Ambitious Ventures',
+      publisher: {
+        '@id': `${siteUrl}/#organization`,
+      },
+    },
+  ],
 };
 
 const themeScript = `
@@ -64,6 +191,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           id="zeetech-theme-init"
           dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body>

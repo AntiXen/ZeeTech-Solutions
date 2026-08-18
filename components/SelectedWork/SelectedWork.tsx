@@ -1,23 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, useTransform, useMotionValueEvent, AnimatePresence, MotionValue } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, CheckCircle2, TrendingUp, Layers, Cpu, ShieldCheck } from 'lucide-react';
+import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
 import styles from './SelectedWork.module.css';
-import PinnedScene from '@/components/shared/PinnedScene/PinnedScene';
-import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
 
 interface Project {
   number: string;
   name: string;
   industry: string;
+  clientLocation: string;
+  headline: string;
   overview: string;
   challenge: string;
   solution: string;
-  technology: string;
   outcome: string;
-  value: string;
-  contribution: string;
+  metrics: { label: string; value: string }[];
+  technology: string[];
+  contribution: string[];
   images: {
     url: string;
     caption: string;
@@ -29,265 +31,372 @@ const projects: Project[] = [
     number: '01',
     name: 'Meridian',
     industry: 'Enterprise FinTech / Payments Infrastructure',
+    clientLocation: 'London, UK · Global Deployment',
+    headline: 'High-volume transaction orchestration and automated multi-currency reconciliation engine.',
     overview:
-      'A scalable financial infrastructure engineered around an event-driven microservices architecture to process high-volume transactions and automated reconciliation with sub-50ms latency.',
+      'A resilient financial infrastructure engineered around event-driven microservices to process high-volume payment batches with sub-50ms latency and zero transaction drops.',
     challenge:
-      'The client had outgrown its legacy transaction platform — high transaction loads and manual reconciliation were creating operational bottlenecks and slowing down new product launches.',
+      'The client had outgrown its legacy monolithic transaction engine — high peak volumes and manual reconciliation created operational bottlenecks and delayed new enterprise merchant onboarding.',
     solution:
-      'ZeeTech rebuilt the core system with event-driven services, transaction orchestration, automated reconciliation workflows, comprehensive observability, and real-time audit trails.',
+      'ZeeTech rebuilt the core system with event-driven Go and Node services, real-time ledger orchestration, automated reconciliation pipelines, comprehensive distributed tracing, and immutable audit trails.',
     outcome:
-      'Capable of supporting significantly higher transaction volumes while reducing operational complexity and providing a resilient base for future products.',
-    value: '$75K–$120K+',
-    technology: 'React · Next.js · TypeScript · Node.js · PostgreSQL · Redis · AWS · Docker · Kubernetes · Event-Driven Architecture',
-    contribution: 'Product Strategy · Architecture · UX Research · Full-Stack Engineering · Cloud DevOps',
+      'Increased system throughput by 4×, reduced reconciliation cycle time from 6 hours to under 4 minutes, and provided a rock-solid platform for global expansion.',
+    metrics: [
+      { label: 'System Throughput', value: '4× Scale' },
+      { label: 'Reconciliation Latency', value: '< 4 Mins' },
+      { label: 'API Response Time', value: 'Sub-50ms' },
+    ],
+    technology: ['Next.js', 'TypeScript', 'Node.js', 'Go', 'PostgreSQL', 'Redis', 'AWS', 'Docker', 'Kubernetes', 'Kafka'],
+    contribution: ['Product Strategy', 'System Architecture', 'UX Research', 'Full-Stack Engineering', 'Cloud DevOps'],
     images: [
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/meridian_case_study_presentation.png',
-        caption: 'System Architecture & Flow'
+        caption: 'System Architecture & Flow Overview',
       },
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/meridian_accounts_reporting.png',
-        caption: 'Accounts & Reporting'
+        caption: 'Accounts & Real-Time Reporting',
       },
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/meridian_reconciliation_operations.png',
-        caption: 'Reconciliation Operations'
-      }
-    ]
+        caption: 'Reconciliation Operations Hub',
+      },
+    ],
   },
   {
     number: '02',
     name: 'FieldOS',
-    industry: 'Operations Management / B2B SaaS',
+    industry: 'Operations Management / B2B Logistics SaaS',
+    clientLocation: 'Austin, TX · North America',
+    headline: 'Unified operations engine connecting dispatch, field technicians, and customers in real time.',
     overview:
-      'A unified operations platform connecting management, dispatch, field technicians, and customers into a synchronized real-time workflow across web and mobile.',
+      'A mission-critical operations ecosystem unifying dispatch command, live GPS fleet tracking, automated job routing, and an offline-first mobile app for field engineers.',
     challenge:
-      'A growing logistics and field-service provider was managing operations across spreadsheets and disconnected chat apps, causing blind spots and high coordination overhead.',
+      'A rapidly growing logistics and field-service company was managing dispatch across disconnected spreadsheets and chat groups, leading to dispatch blind spots and severe coordination overhead.',
     solution:
-      'ZeeTech built a centralized dispatch and operations platform with real-time GPS fleet tracking, automated job assignment, customer status alerts, and an offline-first mobile app.',
+      'ZeeTech built a centralized web dispatch command center synchronized with offline-capable Flutter mobile apps, automated schedule optimization, and real-time customer SMS telemetry.',
     outcome:
-      'Transformed fragmented operations into a connected digital workflow, reducing coordination time and enabling seamless multi-location expansion.',
-    value: '$60K–$90K+',
-    technology: 'Next.js · TypeScript · Node.js · PostgreSQL · Redis · Flutter · AWS · Maps & Location APIs · REST APIs',
-    contribution: 'Discovery · Workflow Architecture · UX/UI Design · Web App · Mobile App · Backend Engineering',
+      'Reduced daily coordination overhead by 50%, increased on-time job arrival rates to 96.8%, and enabled seamless operational expansion across 14 new cities.',
+    metrics: [
+      { label: 'Coordination Overhead', value: '-50%' },
+      { label: 'On-Time Arrival Rate', value: '96.8%' },
+      { label: 'Multi-City Scale', value: '14 Hubs' },
+    ],
+    technology: ['Next.js', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis', 'Flutter', 'AWS', 'Mapbox APIs', 'WebSockets'],
+    contribution: ['Discovery & Workflow Mapping', 'UI/UX Design', 'Web Dispatch App', 'Mobile App Suite', 'Backend Engineering'],
     images: [
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/fieldos_case_study_presentation.png',
-        caption: 'Platform Architecture'
+        caption: 'Platform Architecture & Dispatch Engine',
       },
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/fieldos_dispatch_map.png',
-        caption: 'Real-Time Dispatch Map'
+        caption: 'Live Real-Time Dispatch Fleet Map',
       },
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/fieldos_operations_overview.png',
-        caption: 'Operations Analytics'
-      }
-    ]
+        caption: 'Operations Analytics & Performance',
+      },
+    ],
   },
   {
     number: '03',
     name: 'Northstar',
-    industry: 'B2B Commerce / Digital Marketplace',
+    industry: 'B2B Digital Commerce / Wholesale Marketplace',
+    clientLocation: 'Stockholm · Nordic Distribution',
+    headline: 'High-performance B2B digital commerce tailored for custom distributor pricing and ERP sync.',
     overview:
-      'A high-performance B2B digital commerce platform tailored for distributor sales, custom customer catalogues, tiered pricing, and ERP integration.',
+      'A headless B2B commerce platform built for high-velocity industrial distribution, featuring customer-specific pricing matrixes, bulk ordering workflows, and automated ERP inventory synchronization.',
     challenge:
-      'Customers relied on phone calls and manual sales rep orders, while the internal team spent hours managing custom catalogues, pricing tiers, and inventory reconciliation.',
+      'Wholesale customers were burdened with phone calls and manual sales rep orders, while internal staff spent hours manually re-keying orders and updating inventory levels across legacy systems.',
     solution:
-      'ZeeTech built a modern B2B commerce experience with account-specific pricing, bulk ordering, fast re-order flows, and a modular integration layer connecting ERP and inventory data.',
+      'ZeeTech engineered a custom headless storefront with sub-second catalogue search across 50,000+ SKUs, tiered pricing rules, instant 1-click reordering, and a bi-directional ERP sync layer.',
     outcome:
-      'A scalable digital sales channel handling thousands of SKUs and automated recurring orders, significantly accelerating order velocity.',
-    value: '$50K–$80K+',
-    technology: 'React · Next.js · TypeScript · Node.js · PostgreSQL · AWS · Headless Commerce · REST APIs · ERP Integrations',
-    contribution: 'Commerce Strategy · Product Design · Design System · Full-Stack Integration · Optimization',
+      'Accelerated order placement velocity by 65%, increased digital reorder volume by 140%, and eliminated thousands of hours of manual sales administrative friction.',
+    metrics: [
+      { label: 'Order Velocity', value: '+65%' },
+      { label: 'Digital Reorders', value: '+140%' },
+      { label: 'Catalogue Capacity', value: '50K+ SKUs' },
+    ],
+    technology: ['React', 'Next.js', 'TypeScript', 'Node.js', 'PostgreSQL', 'AWS', 'Headless Commerce', 'ERP APIs'],
+    contribution: ['Commerce Strategy', 'Design System', 'Headless Architecture', 'Full-Stack Integration', 'Performance Tuning'],
     images: [
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/northstar_case_study_presentation.png',
-        caption: 'Commerce Architecture'
+        caption: 'Commerce Architecture & Integration',
       },
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/northstar_customer_storefront.png',
-        caption: 'Customer Storefront'
+        caption: 'High-Velocity Customer Storefront',
       },
       {
         url: 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/Portfolio/northstar_commerce_operations.png',
-        caption: 'Order Operations'
-      }
-    ]
-  }
+        caption: 'Order Operations & ERP Sync',
+      },
+    ],
+  },
 ];
 
-function SelectedWorkSceneContent({ progress }: { progress: MotionValue<number> }) {
+export default function SelectedWork() {
   const [activeProject, setActiveProject] = useState(0);
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  const [activeImageModal, setActiveImageModal] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
 
-  const accentColor = useTransform(
-    progress,
-    [0.08, 0.4],
-    [isDark ? '#555555' : '#8E8E98', isDark ? '#22C55E' : '#FF5500']
-  );
+  useEffect(() => {
+    if (isReducedMotion()) return;
 
-  useMotionValueEvent(progress, 'change', (latest) => {
-    let projectIdx = 0;
-    if (latest < 0.333) {
-      projectIdx = 0;
-    } else if (latest < 0.666) {
-      projectIdx = 1;
-    } else {
-      projectIdx = 2;
-    }
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        headerRef.current,
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    }, sectionRef);
 
-    if (projectIdx !== activeProject) {
-      setActiveProject(projectIdx);
-    }
-  });
+    return () => ctx.revert();
+  }, []);
 
-  const currentProject = projects[activeProject];
+  const current = projects[activeProject];
 
   return (
-    <div className={styles.sceneContainer}>
-      <div className={styles.container}>
-        {/* Section Header matching site-wide typography */}
-        <div className={styles.header}>
-          <div className={styles.headerLeft}>
-            <span className={styles.label}>
-              <span className={styles.accent}>05</span> — SELECTED WORK
-            </span>
+    <section id="work" ref={sectionRef} className={`section ${styles.workSection}`}>
+      <div className="section-container">
+        {/* Header */}
+        <div ref={headerRef} className={styles.sectionHeader}>
+          <div>
+            <div className="label-eyebrow">
+              <span className="label-dot" />
+              <span>05 — SELECTED WORK & CASE STUDIES</span>
+            </div>
             <h2 className={styles.headline}>
-              Built for real businesses. <motion.span style={{ color: accentColor }}>Designed for real outcomes.</motion.span>
+              Engineered for real enterprises.{' '}
+              <span className={styles.accentText}>Proven in production.</span>
             </h2>
           </div>
 
+          {/* Project Switcher Pills */}
           <div className={styles.projectPills}>
-            {projects.map((p, i) => (
-              <button
-                key={`${p.number}-${theme}`}
-                onClick={() => setActiveProject(i)}
-                className={`${styles.projectPill} ${i === activeProject ? styles.projectPillActive : ''}`}
-              >
-                {p.number} {p.name.toUpperCase()}
-              </button>
-            ))}
+            {projects.map((p, idx) => {
+              const isActive = idx === activeProject;
+              return (
+                <button
+                  key={p.number}
+                  onClick={() => setActiveProject(idx)}
+                  className={`${styles.projectPill} ${isActive ? styles.projectPillActive : ''}`}
+                  role="tab"
+                  aria-selected={isActive}
+                >
+                  <span className={styles.pillNumber}>{p.number}</span>
+                  <span className={styles.pillName}>{p.name.toUpperCase()}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeProjectIndicator"
+                      className={styles.activePillGlow}
+                      transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Viewport-Fitted Project Card */}
-        <div className={styles.stage}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`project-${activeProject}-${theme}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className={styles.projectCard}
-            >
-              {/* Left: 3-Image Grid Layout */}
-              <div className={styles.imageGridArea}>
-                {/* Primary Banner Image */}
-                <div className={styles.primaryImageWrapper}>
+        {/* Dynamic Project Showcase Card */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.number}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className={styles.caseStudyCard}
+          >
+            {/* Top Bar */}
+            <div className={styles.caseHeader}>
+              <div>
+                <div className={styles.metaTop}>
+                  <span className={styles.caseNum}>CASE STUDY {current.number}</span>
+                  <span className={styles.metaDivider}>/</span>
+                  <span className={styles.industryTag}>{current.industry}</span>
+                </div>
+                <h3 className={styles.caseTitle}>{current.name}</h3>
+              </div>
+
+              <div className={styles.locationBadge}>
+                <span>{current.clientLocation}</span>
+              </div>
+            </div>
+
+            {/* Metrics Impact Bar */}
+            <div className={styles.metricsBar}>
+              {current.metrics.map((m, i) => (
+                <div key={i} className={styles.metricItem}>
+                  <div className={styles.metricItemValue}>{m.value}</div>
+                  <div className={styles.metricItemLabel}>{m.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Visual Media Showcase */}
+            <div className={styles.mediaGrid}>
+              {/* Primary Featured Image */}
+              <div 
+                className={styles.mainImageWrapper}
+                onClick={() => setActiveImageModal(current.images[0].url)}
+              >
+                <Image
+                  src={current.images[0].url}
+                  alt={`${current.name} — ${current.images[0].caption}`}
+                  fill
+                  className={styles.caseImage}
+                  sizes="(max-width: 1024px) 100vw, 650px"
+                  priority
+                />
+                <div className={styles.imageOverlay}>
+                  <span className={styles.imageCaption}>{current.images[0].caption}</span>
+                  <span className={styles.expandHint}>Click to Inspect ↗</span>
+                </div>
+              </div>
+
+              {/* Sub-Images Column */}
+              <div className={styles.subImagesCol}>
+                <div 
+                  className={styles.subImageWrapper}
+                  onClick={() => setActiveImageModal(current.images[1].url)}
+                >
                   <Image
-                    src={currentProject.images[0].url}
-                    alt={`${currentProject.name} — ${currentProject.images[0].caption}`}
+                    src={current.images[1].url}
+                    alt={`${current.name} — ${current.images[1].caption}`}
                     fill
-                    className={styles.gridImg}
-                    sizes="(max-width: 1024px) 100vw, 450px"
-                    priority
+                    className={styles.caseImage}
+                    sizes="(max-width: 1024px) 50vw, 320px"
                   />
-                  <div className={styles.imageBadge}>
-                    <span>{currentProject.images[0].caption}</span>
+                  <div className={styles.imageOverlaySmall}>
+                    <span>{current.images[1].caption}</span>
                   </div>
                 </div>
 
-                {/* Bottom 2 Side-by-Side Companion Images */}
-                <div className={styles.subImagesRow}>
-                  <div className={styles.subImageWrapper}>
-                    <Image
-                      src={currentProject.images[1].url}
-                      alt={`${currentProject.name} — ${currentProject.images[1].caption}`}
-                      fill
-                      className={styles.gridImg}
-                      sizes="(max-width: 1024px) 50vw, 220px"
-                    />
-                    <div className={styles.imageBadgeSmall}>
-                      <span>{currentProject.images[1].caption}</span>
-                    </div>
+                <div 
+                  className={styles.subImageWrapper}
+                  onClick={() => setActiveImageModal(current.images[2].url)}
+                >
+                  <Image
+                    src={current.images[2].url}
+                    alt={`${current.name} — ${current.images[2].caption}`}
+                    fill
+                    className={styles.caseImage}
+                    sizes="(max-width: 1024px) 50vw, 320px"
+                  />
+                  <div className={styles.imageOverlaySmall}>
+                    <span>{current.images[2].caption}</span>
                   </div>
+                </div>
+              </div>
+            </div>
 
-                  <div className={styles.subImageWrapper}>
-                    <Image
-                      src={currentProject.images[2].url}
-                      alt={`${currentProject.name} — ${currentProject.images[2].caption}`}
-                      fill
-                      className={styles.gridImg}
-                      sizes="(max-width: 1024px) 50vw, 220px"
-                    />
-                    <div className={styles.imageBadgeSmall}>
-                      <span>{currentProject.images[2].caption}</span>
-                    </div>
+            {/* Deep-Dive Narrative Details */}
+            <div className={styles.detailsGrid}>
+              <div className={styles.narrativeCol}>
+                <h4 className={styles.headlineSummary}>{current.headline}</h4>
+                <p className={styles.overviewText}>{current.overview}</p>
+
+                <div className={styles.challengeSolutionBox}>
+                  <div className={styles.boxSection}>
+                    <div className={styles.boxLabel}>THE CHALLENGE</div>
+                    <p className={styles.boxText}>{current.challenge}</p>
+                  </div>
+                  <div className={styles.boxDivider} />
+                  <div className={styles.boxSection}>
+                    <div className={styles.boxLabel}>THE ENGINEERING SOLUTION</div>
+                    <p className={styles.boxText}>{current.solution}</p>
+                  </div>
+                  <div className={styles.boxDivider} />
+                  <div className={styles.boxSection}>
+                    <div className={styles.boxLabel}>THE BUSINESS OUTCOME</div>
+                    <p className={styles.boxText}>{current.outcome}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Right: Rich Structured Case Details */}
-              <div className={styles.infoArea}>
-                <div className={styles.cardHeader}>
-                  <div className={styles.titleRow}>
-                    <span className={styles.cardNumber}>{currentProject.number}</span>
-                    <h3 className={styles.cardTitle}>{currentProject.name}</h3>
-                    <span className={styles.valueBadge}>{currentProject.value}</span>
+              {/* Meta & Tech Stack Side Column */}
+              <div className={styles.metaSideCol}>
+                <div className={styles.sideBlock}>
+                  <div className={styles.sideBlockLabel}>ZEETECH RESPONSIBILITY</div>
+                  <div className={styles.contributionList}>
+                    {current.contribution.map((c, i) => (
+                      <div key={i} className={styles.contribItem}>
+                        <CheckCircle2 size={14} className={styles.contribCheck} />
+                        <span>{c}</span>
+                      </div>
+                    ))}
                   </div>
-                  <span className={styles.cardIndustry}>
-                    <span className={styles.cardIndustryPrefix}>/</span>
-                    {currentProject.industry}
-                  </span>
                 </div>
 
-                <p className={styles.overviewText}>{currentProject.overview}</p>
-
-                <div className={styles.divider} />
-
-                <div className={styles.metaGrid}>
-                  <div className={styles.metaBlock}>
-                    <span className={styles.metaLabel}>THE CHALLENGE</span>
-                    <p className={styles.metaText}>{currentProject.challenge}</p>
+                <div className={styles.sideBlock}>
+                  <div className={styles.sideBlockLabel}>TECHNOLOGY STACK</div>
+                  <div className={styles.techBadgeCloud}>
+                    {current.technology.map((t, i) => (
+                      <span key={i} className={styles.techTag}>
+                        {t}
+                      </span>
+                    ))}
                   </div>
+                </div>
 
-                  <div className={styles.metaBlock}>
-                    <span className={styles.metaLabel}>THE SOLUTION</span>
-                    <p className={styles.metaText}>{currentProject.solution}</p>
-                  </div>
-
-                  <div className={styles.metaBlock}>
-                    <span className={styles.metaLabel}>THE OUTCOME</span>
-                    <p className={styles.metaText}>{currentProject.outcome}</p>
-                  </div>
-
-                  <div className={styles.metaBlock}>
-                    <span className={styles.metaLabel}>CONTRIBUTION</span>
-                    <p className={styles.metaTech}>{currentProject.contribution}</p>
-                  </div>
-
-                  <div className={`${styles.metaBlock} ${styles.fullWidth}`}>
-                    <span className={styles.metaLabel}>TECHNOLOGY</span>
-                    <p className={styles.metaTech}>{currentProject.technology}</p>
-                  </div>
+                <div className={styles.actionBlock}>
+                  <a href="#contact" className={styles.discussCaseBtn}>
+                    <span>Discuss Similar Architecture</span>
+                    <ArrowUpRight size={16} />
+                  </a>
                 </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </div>
-  );
-}
 
-export default function SelectedWork() {
-  const { theme } = useTheme();
-  return (
-    <PinnedScene id="work" trackHeight="200vh">
-      {(progress) => <SelectedWorkSceneContent key={theme} progress={progress} />}
-    </PinnedScene>
+      {/* Image Modal Lightbox */}
+      <AnimatePresence>
+        {activeImageModal && (
+          <motion.div
+            className={styles.lightboxBackdrop}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveImageModal(null)}
+          >
+            <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+              <button 
+                className={styles.closeLightbox}
+                onClick={() => setActiveImageModal(null)}
+                aria-label="Close image preview"
+              >
+                ✕ Close
+              </button>
+              <div className={styles.lightboxImageContainer}>
+                <Image
+                  src={activeImageModal}
+                  alt="Architecture preview"
+                  fill
+                  className={styles.modalImage}
+                  sizes="90vw"
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
   );
 }

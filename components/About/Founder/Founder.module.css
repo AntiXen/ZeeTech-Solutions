@@ -1,214 +1,247 @@
-.sceneContainer {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 80px var(--margin) 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.container {
-  width: 100%;
+.founderSection {
+  background-color: var(--bg-primary);
+  position: relative;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 40px;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
   align-items: center;
 }
 
-/* Left Column: Titles & Texts */
-.textCol {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.topArea {
-  display: flex;
-  flex-direction: column;
-}
-
-.label {
-  display: block;
-  font-size: 11px;
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
+/* Left Column */
 .headline {
-  font-size: clamp(1.9rem, 3.4vw, 3.4rem);
+  font-size: var(--size-display);
   font-weight: var(--weight-extrabold);
-  line-height: var(--leading-tight);
   letter-spacing: var(--tracking-display);
-  color: var(--text-primary);
-  margin: 0;
+  line-height: var(--leading-display);
+  margin-bottom: 24px;
 }
 
-.accent {
+.accentText {
   color: var(--accent);
 }
 
-.quoteBlock {
+.quoteCard {
+  position: relative;
+  padding: 24px 28px 24px 60px;
+  background-color: var(--bg-card);
   border-left: 3px solid var(--accent);
-  padding: 8px 0 8px 16px;
-  margin: 2px 0 0 0;
-  border-radius: 2px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border-top: 1px solid var(--card-border);
+  border-right: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 28px;
+}
+
+.quoteIcon {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  color: var(--accent);
+  opacity: 0.8;
 }
 
 .quoteText {
-  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
-  font-weight: var(--weight-semibold);
-  line-height: 1.4;
-  margin: 0;
+  font-size: 1.05rem;
   font-style: italic;
-  letter-spacing: var(--tracking-tight);
-}
-
-.philosophyText {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: clamp(0.85rem, 1vw, 0.95rem);
-  color: var(--text-secondary);
-  line-height: 1.5;
-  max-width: 560px;
-}
-
-.philosophyText p {
-  margin: 0;
-}
-
-/* Right Column: CEO Image & Card */
-.imageCol {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.portraitCard {
-  width: 100%;
-  max-width: 440px;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--divider);
-  border-radius: var(--radius-md);
-  padding: 12px 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  box-shadow: var(--card-shadow);
-}
-
-.portraitFrame {
-  width: 100%;
-  height: 360px;
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--divider);
-  border-radius: var(--radius-sm);
-  position: relative;
-  overflow: hidden;
-}
-
-.portraitImage {
-  object-fit: cover;
-  object-position: center 20%;
-  border-radius: var(--radius-sm);
-  transition: transform 0.4s ease;
-}
-
-.portraitCard:hover .portraitImage {
-  transform: scale(1.03);
-}
-
-.cornerTL,
-.cornerTR,
-.cornerBL,
-.cornerBR {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: var(--accent);
-  opacity: 0.85;
-  z-index: 2;
-}
-
-.cornerTL {
-  top: 8px;
-  left: 8px;
-  border-top: 1.5px solid var(--accent);
-  border-left: 1.5px solid var(--accent);
-}
-
-.cornerTR {
-  top: 8px;
-  right: 8px;
-  border-top: 1.5px solid var(--accent);
-  border-right: 1.5px solid var(--accent);
-}
-
-.cornerBL {
-  bottom: 8px;
-  left: 8px;
-  border-bottom: 1.5px solid var(--accent);
-  border-left: 1.5px solid var(--accent);
-}
-
-.cornerBR {
-  bottom: 8px;
-  right: 8px;
-  border-bottom: 1.5px solid var(--accent);
-  border-right: 1.5px solid var(--accent);
-}
-
-.founderMeta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0 4px;
-}
-
-.founderName {
-  font-size: 1.25rem;
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-medium);
   color: var(--text-primary);
-  letter-spacing: var(--tracking-tight);
+  line-height: 1.6;
 }
 
-.founderTitle {
-  font-size: 12.5px;
-  color: var(--text-secondary);
+.narrativeBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.leadPara {
+  font-size: var(--size-body-lg);
+  color: var(--text-primary);
+  line-height: 1.65;
   font-weight: var(--weight-medium);
 }
 
-@media (max-width: 1024px) {
-  .sceneContainer {
-    padding: 80px 20px 20px;
-  }
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .portraitFrame {
-    height: 320px;
-  }
+.para {
+  font-size: var(--size-body);
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
-@media (max-width: 768px) {
-  .sceneContainer {
-    padding: 60px 20px 20px;
-  }
-  .portraitCard {
-    max-width: 100%;
-  }
-  .portraitFrame {
-    height: 280px;
-  }
+.founderCredentials {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 20px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-md);
+}
+
+.credItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.credIcon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Right Column: Portrait Card */
+.portraitCard {
+  background-color: var(--bg-card);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.portraitCard:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.imageFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.8;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--divider-strong);
+  background-color: var(--bg-primary);
+}
+
+.portraitImg {
+  object-fit: cover;
+  object-position: top center;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.portraitCard:hover .portraitImg {
+  transform: scale(1.02);
+}
+
+.imageVignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 65%, rgba(7, 7, 9, 0.85) 100%);
+}
+
+.verifiedTag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background-color: rgba(7, 7, 9, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.verifiedDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.cardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.founderName {
+  font-size: 1.4rem;
+  font-weight: var(--weight-extrabold);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.founderRole {
+  font-size: 0.875rem;
+  font-weight: var(--weight-semibold);
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.founderBase {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--divider);
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--divider);
+  color: var(--text-secondary);
+  transition: all var(--duration-fast) ease;
+}
+
+.socialBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.bookConsultBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  padding: 10px 18px;
+  background-color: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-md);
+  color: var(--accent);
+  font-size: var(--size-small);
+  font-weight: var(--weight-semibold);
+  transition: all var(--duration-fast) ease;
+}
+
+.bookConsultBtn:hover {
+  background-color: var(--accent);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px var(--accent-glow);
 }

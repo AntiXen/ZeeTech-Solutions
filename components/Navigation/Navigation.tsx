@@ -3,18 +3,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Sun, Moon, Menu, X, ArrowUpRight, Sparkles } from 'lucide-react';
 import styles from './Navigation.module.css';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
 import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
 
 const navLinks = [
-  { href: '#work', label: 'Work', id: 'work' },
+  { href: '#work', label: 'Selected Work', id: 'work' },
   { href: '#capabilities', label: 'Capabilities', id: 'capabilities' },
   { href: '#approach', label: 'Approach', id: 'approach' },
   { href: '#about', label: 'About', id: 'about' },
+  { href: '#reviews', label: 'Perspectives', id: 'reviews' },
 ];
 
-const allSectionIds = ['hero', 'proposition', 'capabilities', 'build', 'work', 'approach', 'about', 'manifesto', 'technology', 'contact'];
+const allSectionIds = ['hero', 'proposition', 'capabilities', 'build', 'work', 'approach', 'about', 'manifesto', 'reviews', 'technology', 'contact'];
 
 function ThemeToggleButton({ className }: { className?: string }) {
   const { theme, toggleTheme } = useTheme();
@@ -28,49 +30,27 @@ function ThemeToggleButton({ className }: { className?: string }) {
     >
       <AnimatePresence mode="wait" initial={false}>
         {theme === 'dark' ? (
-          <motion.svg
+          <motion.div
             key="sun"
-            viewBox="0 0 24 24"
-            width="17"
-            height="17"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
             initial={{ opacity: 0, rotate: -45, scale: 0.7 }}
             animate={{ opacity: 1, rotate: 0, scale: 1 }}
             exit={{ opacity: 0, rotate: 45, scale: 0.7 }}
             transition={{ duration: 0.2 }}
+            className={styles.themeIconWrapper}
           >
-            <circle cx="12" cy="12" r="4" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </motion.svg>
+            <Sun size={17} strokeWidth={2} />
+          </motion.div>
         ) : (
-          <motion.svg
+          <motion.div
             key="moon"
-            viewBox="0 0 24 24"
-            width="17"
-            height="17"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
             initial={{ opacity: 0, rotate: 45, scale: 0.7 }}
             animate={{ opacity: 1, rotate: 0, scale: 1 }}
             exit={{ opacity: 0, rotate: -45, scale: 0.7 }}
             transition={{ duration: 0.2 }}
+            className={styles.themeIconWrapper}
           >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </motion.svg>
+            <Moon size={17} strokeWidth={2} />
+          </motion.div>
         )}
       </AnimatePresence>
     </button>
@@ -86,7 +66,7 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -106,7 +86,7 @@ export default function Navigation() {
           }
         });
       },
-      { rootMargin: '-30% 0px -50% 0px' }
+      { rootMargin: '-25% 0px -45% 0px' }
     );
 
     allSectionIds.forEach((id) => {
@@ -156,12 +136,21 @@ export default function Navigation() {
   };
 
   return (
-    <nav className={`${styles.nav} ${isScrolled ? styles.scrolled : ''}`} aria-label="Main navigation">
-      <div className={styles.container}>
-        <Link href="#" className={styles.brand} onClick={closeMenu}>
-          ZeeTech
-        </Link>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+      <nav className={styles.navBar} aria-label="Main navigation">
+        {/* Brand & Live Status */}
+        <div className={styles.brandWrapper}>
+          <Link href="#hero" className={styles.brand} onClick={closeMenu}>
+            <span className={styles.brandLogo}>ZeeTech</span>
+            <span className={styles.brandDot} />
+          </Link>
+          <div className={styles.availabilityPill}>
+            <span className={styles.livePulse} />
+            <span className={styles.availabilityText}>Available for Projects</span>
+          </div>
+        </div>
 
+        {/* Desktop Links */}
         <div className={styles.desktopNav}>
           <div className={styles.navLinks}>
             {navLinks.map((link) => {
@@ -178,7 +167,7 @@ export default function Navigation() {
                       layoutId="activeSection"
                       className={styles.activeIndicator}
                       initial={false}
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
                     />
                   )}
                 </Link>
@@ -186,17 +175,19 @@ export default function Navigation() {
             })}
           </div>
 
-          {/* Theme Switcher */}
-          <ThemeToggleButton />
-
-          <Link 
-            href="#contact" 
-            className={`${styles.cta} ${activeSection === 'contact' ? styles.ctaActive : ''}`}
-          >
-            Start a conversation
-          </Link>
+          <div className={styles.navActions}>
+            <ThemeToggleButton />
+            <Link 
+              href="#contact" 
+              className={styles.ctaButton}
+            >
+              <span>Start a Project</span>
+              <ArrowUpRight size={15} className={styles.ctaIcon} />
+            </Link>
+          </div>
         </div>
 
+        {/* Mobile Nav Toggle */}
         <div className={styles.mobileNav}>
           <ThemeToggleButton className={styles.mobileThemeToggle} />
           <button
@@ -204,59 +195,70 @@ export default function Navigation() {
             onClick={toggleMenu}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? 'Close Menu' : 'Open Navigation Menu'}
           >
-            {isMenuOpen ? 'Close' : 'Menu'}
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
-      </div>
+      </nav>
 
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
             id="mobile-menu"
             className={styles.mobileOverlay}
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             ref={overlayRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Mobile Menu"
+            aria-label="Mobile Navigation"
           >
             <div className={styles.mobileMenuInner}>
               <div className={styles.mobileLinks}>
-                {[...navLinks, { href: '#contact', label: 'Contact', id: 'contact' }].map((link) => (
-                  <Link
+                {[...navLinks, { href: '#contact', label: 'Start a Project', id: 'contact' }].map((link, idx) => (
+                  <motion.div
                     key={link.href}
-                    href={link.href}
-                    className={styles.mobileLink}
-                    onClick={closeMenu}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.04 }}
                   >
-                    {link.label}
-                  </Link>
+                    <Link
+                      href={link.href}
+                      className={`${styles.mobileLink} ${activeSection === link.id ? styles.mobileActiveLink : ''}`}
+                      onClick={closeMenu}
+                    >
+                      <span>{link.label}</span>
+                      <ArrowUpRight size={16} className={styles.mobileLinkArrow} />
+                    </Link>
+                  </motion.div>
                 ))}
               </div>
+
               <div className={styles.mobileDivider} />
               
               <div className={styles.mobileMenuBottom}>
                 <a
-                  href={getWhatsAppUrl()}
-                  className={styles.mobileContact}
+                  href={getWhatsAppUrl("Hello ZeeTech! I'd like to discuss a project inquiry.")}
+                  className={styles.mobileContactBtn}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMenu}
                 >
-                  WhatsApp — Instant response ↗
+                  <Sparkles size={16} />
+                  <span>WhatsApp Direct Response ↗</span>
                 </a>
-                <span className={styles.mobileThemeLabel}>
-                  Theme: {theme === 'dark' ? 'Dark' : 'Light'}
-                </span>
+                <div className={styles.mobileLocation}>
+                  <span>Dhaka · Worldwide Delivery (UTC+6)</span>
+                </div>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 }

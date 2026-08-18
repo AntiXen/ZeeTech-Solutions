@@ -1,144 +1,165 @@
 'use client';
 
-import React from 'react';
-import { motion, useTransform, MotionValue } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
+import { Briefcase, Cpu, Lightbulb, Compass, Handshake, ArrowUpRight } from 'lucide-react';
+import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
 import styles from './Proposition.module.css';
-import PinnedScene from '@/components/shared/PinnedScene/PinnedScene';
-import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
 
-const items = [
-  { num: '01', title: 'Business understanding' },
-  { num: '02', title: 'Product thinking' },
-  { num: '03', title: 'Technical expertise' },
-  { num: '04', title: 'Strategic advice' },
-  { num: '05', title: 'Long-term partnership' }
+const pillars = [
+  {
+    num: '01',
+    title: 'Deep Business Understanding',
+    icon: Briefcase,
+    description: 'We reverse-engineer the business model, unit economics, and operational bottlenecks before writing a line of code.',
+    highlight: 'No blind coding'
+  },
+  {
+    num: '02',
+    title: 'Rigorous Product Thinking',
+    icon: Lightbulb,
+    description: 'We challenge unclear assumptions and refine features down to what genuinely drives retention, conversion, and market advantage.',
+    highlight: 'High-signal UX'
+  },
+  {
+    num: '03',
+    title: 'World-Class Technical Architecture',
+    icon: Cpu,
+    description: 'Event-driven services, type-safe codebases, resilient data pipelines, and cloud-native infrastructure engineered to scale.',
+    highlight: 'Sub-50ms speed'
+  },
+  {
+    num: '04',
+    title: 'Strategic Consultation & Clarity',
+    icon: Compass,
+    description: 'Honest roadmaps, transparent trade-offs, and pragmatic technical advice from senior engineering leaders who care about your ROI.',
+    highlight: 'Executive alignment'
+  },
+  {
+    num: '05',
+    title: 'Long-Term Collaborative Partnership',
+    icon: Handshake,
+    description: 'We don’t abandon you after launch. We monitor, optimize, and iterate alongside your team as your user base expands.',
+    highlight: 'Continuous growth'
+  }
 ];
 
-interface PropositionSceneProps {
-  progress: MotionValue<number>;
-}
+export default function Proposition() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
 
-function PropositionSceneContent({ progress }: PropositionSceneProps) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+  useEffect(() => {
+    if (isReducedMotion()) return;
 
-  const ambitionColor = useTransform(
-    progress,
-    [0.05, 0.35],
-    [isDark ? '#555555' : '#8E8E98', isDark ? '#22C55E' : '#FF5500']
-  );
-  const techColor = useTransform(
-    progress,
-    [0.2, 0.55],
-    [isDark ? '#555555' : '#8E8E98', isDark ? '#22C55E' : '#FF5500']
-  );
+    const ctx = gsap.context(() => {
+      // Animate left column
+      gsap.fromTo(
+        leftColRef.current,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+
+      // Stagger right column cards
+      const cards = cardsRef.current?.querySelectorAll(`.${styles.pillarCard}`);
+      if (cards && cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: cardsRef.current,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className={styles.sceneContainer}>
-      <div className={styles.container}>
-        <span className={styles.label}>
-          <span className={styles.accent}>02</span> — BRAND PROPOSITION
-        </span>
-
+    <section id="proposition" ref={sectionRef} className={`section ${styles.propositionSection}`}>
+      <div className="section-container">
         <div className={styles.grid}>
-          {/* Left Column */}
-          <div className={styles.leftCol}>
+          {/* Left: Editorial Thesis */}
+          <div ref={leftColRef} className={styles.leftCol}>
+            <div className="label-eyebrow">
+              <span className="label-dot" />
+              <span>02 — BRAND PROPOSITION</span>
+            </div>
+
             <h2 className={styles.headline}>
-              <span>You bring the </span>
-              <motion.span style={{ color: ambitionColor }}>ambition.</motion.span>
-              <br />
-              <span>We bring the </span>
-              <motion.span style={{ color: techColor }}>technology.</motion.span>
+              You bring the <span className={styles.accentText}>ambition.</span><br />
+              We engineer the <span className={styles.accentSecondary}>technology.</span>
             </h2>
 
             <div className={styles.bodyText}>
-              <p className={styles.paragraph}>
-                Most software projects drift because the builder was waiting for instructions. We work the other way: alongside you — understanding the business behind the build, asking the questions that turn a rough idea into a precise product, and challenging the answers that won&apos;t hold up.
+              <p className={styles.leadParagraph}>
+                Most software projects fail or drift because the development team is merely waiting for instructions. At ZeeTech, we operate as a proactive technical co-founder.
               </p>
               <p className={styles.paragraph}>
-                You don&apos;t need to arrive with a perfect technical specification. Bring us the problem, the ambition or the idea. We&apos;ll help figure out what comes next.
+                We delve into the business model behind the build, challenge weak assumptions before they turn into costly technical debt, and engineer software that stands the test of real-world volume.
               </p>
+              <p className={styles.paragraph}>
+                You don’t need a 100-page specification to start. Bring us the ambition, the problem, or the opportunity. We’ll architect the solution.
+              </p>
+            </div>
+
+            <div className={styles.quoteBox}>
+              <div className={styles.quoteAuthor}>OUR CORE PROMISE</div>
+              <div className={styles.quoteStatement}>
+                “If it ships under our name, we stand behind its performance, security, and scalability 24/7/365.”
+              </div>
             </div>
           </div>
 
-          {/* Right Column: 5 Sequential Benefit Items */}
-          <div className={styles.rightCol}>
-            <div className={styles.subtitle}>What you get with ZeeTech</div>
-            <div className={styles.list}>
-              {items.map((item, index) => {
-                const stepStart = 0.15 + (index / items.length) * 0.7;
-                const stepEnd = stepStart + (0.7 / items.length);
+          {/* Right: 5 Value Pillars */}
+          <div ref={cardsRef} className={styles.rightCol}>
+            <div className={styles.pillarsHeader}>
+              <span className={styles.pillarsSubtitle}>WHAT PARTNERING WITH ZEETECH DELIVERS</span>
+            </div>
 
+            <div className={styles.pillarsList}>
+              {pillars.map((item) => {
+                const IconComponent = item.icon;
                 return (
-                  <PropositionItem
-                    key={`${item.num}-${theme}`}
-                    item={item}
-                    progress={progress}
-                    stepStart={stepStart}
-                    stepEnd={stepEnd}
-                    isDark={isDark}
-                  />
+                  <div key={item.num} className={styles.pillarCard}>
+                    <div className={styles.pillarTop}>
+                      <div className={styles.pillarMeta}>
+                        <span className={styles.pillarNumber}>{item.num}</span>
+                        <div className={styles.pillarIcon}>
+                          <IconComponent size={18} />
+                        </div>
+                      </div>
+                      <span className={styles.pillarBadge}>{item.highlight}</span>
+                    </div>
+
+                    <h3 className={styles.pillarTitle}>{item.title}</h3>
+                    <p className={styles.pillarDescription}>{item.description}</p>
+                  </div>
                 );
               })}
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function PropositionItem({
-  item,
-  progress,
-  stepStart,
-  stepEnd,
-  isDark
-}: {
-  item: { num: string; title: string };
-  progress: MotionValue<number>;
-  stepStart: number;
-  stepEnd: number;
-  isDark: boolean;
-}) {
-  const numColor = useTransform(
-    progress,
-    [Math.max(0, stepStart - 0.06), stepStart, stepEnd, Math.min(1, stepEnd + 0.06)],
-    [isDark ? '#444444' : '#8E8E98', isDark ? '#22C55E' : '#FF5500', isDark ? '#22C55E' : '#FF5500', isDark ? '#777777' : '#52525B']
-  );
-
-  const titleColor = useTransform(
-    progress,
-    [Math.max(0, stepStart - 0.06), stepStart, stepEnd, Math.min(1, stepEnd + 0.06)],
-    [isDark ? '#666666' : '#8E8E98', isDark ? '#FFFFFF' : '#0A0A0C', isDark ? '#FFFFFF' : '#0A0A0C', isDark ? '#9E9E9E' : '#52525B']
-  );
-
-  const lineScaleY = useTransform(
-    progress,
-    [Math.max(0, stepStart - 0.06), stepStart, stepEnd, Math.min(1, stepEnd + 0.06)],
-    [0, 1, 1, 0]
-  );
-
-  return (
-    <div className={styles.rowWrapper}>
-      <div className={styles.listItem}>
-        <motion.div className={styles.itemAccentLine} style={{ scaleY: lineScaleY }} />
-        <motion.span className={styles.itemNumber} style={{ color: numColor }}>
-          {item.num}
-        </motion.span>
-        <motion.span className={styles.itemTitle} style={{ color: titleColor }}>
-          {item.title}
-        </motion.span>
-      </div>
-    </div>
-  );
-}
-
-export default function Proposition() {
-  const { theme } = useTheme();
-  return (
-    <PinnedScene id="proposition" trackHeight="200vh">
-      {(progress) => <PropositionSceneContent key={theme} progress={progress} />}
-    </PinnedScene>
+    </section>
   );
 }

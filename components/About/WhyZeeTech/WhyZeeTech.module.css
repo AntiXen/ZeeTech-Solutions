@@ -1,113 +1,143 @@
-.sceneContainer {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--margin);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.container {
-  width: 100%;
-  max-width: 1080px;
-}
-
-.header {
-  margin-bottom: 24px;
-}
-
-.label {
-  display: block;
-  font-size: 11px;
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-}
-
-.headline {
-  font-size: clamp(2rem, 3.8vw, 3.8rem);
-  font-weight: var(--weight-extrabold);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-display);
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.accent {
-  color: var(--accent);
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
+.whySection {
+  background-color: var(--bg-secondary);
   border-top: 1px solid var(--divider);
-}
-
-.rowWrapper {
   border-bottom: 1px solid var(--divider);
-  overflow: hidden;
-}
-
-.manifestoRow {
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 14px 0;
   position: relative;
 }
 
-.activeLine {
-  position: absolute;
-  left: -8px;
-  top: 6px;
-  bottom: 6px;
-  width: 2px;
-  background-color: var(--accent);
-  transform-origin: top;
-  box-shadow: 0 0 10px var(--accent-glow);
+.sectionHeader {
+  max-width: 800px;
+  margin-bottom: 48px;
 }
 
-.num {
-  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+.headline {
+  font-size: var(--size-display);
   font-weight: var(--weight-extrabold);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  width: 40px;
-  flex-shrink: 0;
-  padding-top: 2px;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+  margin-bottom: 16px;
 }
 
-.textBlock {
+.accentText {
+  color: var(--accent);
+}
+
+.subheadline {
+  font-size: var(--size-body-lg);
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* Principles Grid */
+.principlesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 860px) {
+  .principlesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.principleCard {
+  background-color: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
-.stmtTitle {
-  font-size: clamp(1.1rem, 1.45vw, 1.35rem);
+.principleCard:hover {
+  border-color: var(--card-border-hover);
+  transform: translateY(-3px);
+  background-color: var(--bg-card-hover);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.iconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+.cardNumber {
+  font-family: monospace;
+  font-size: 0.8rem;
   font-weight: var(--weight-bold);
-  margin: 0;
-  letter-spacing: var(--tracking-tight);
+  color: var(--accent);
+  padding: 4px 10px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-full);
 }
 
-.stmtDesc {
-  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+.takeawayBadge {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  background-color: var(--divider-faint);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.principleTitle {
+  font-size: 1.25rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.principleDesc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+.rationaleBox {
+  margin-top: auto;
+  padding: 16px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-md);
+}
+
+.rationaleLabel {
+  font-size: 0.6875rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.rationaleText {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
   line-height: 1.55;
   margin: 0;
-  max-width: 760px;
-}
-
-@media (max-width: 768px) {
-  .sceneContainer {
-    padding: 60px 20px 20px;
-  }
-  .manifestoRow {
-    gap: 14px;
-    padding: 10px 0;
-  }
 }

@@ -1,117 +1,155 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, useTransform, MotionValue } from 'framer-motion';
+import { Quote, CheckCircle2, Mail, ArrowUpRight } from 'lucide-react';
+import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
 import styles from './Founder.module.css';
-import PinnedScene from '@/components/shared/PinnedScene/PinnedScene';
-import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
-import TypewriterText from '@/components/shared/TypewriterText/TypewriterText';
 
 const CEO_IMAGE_URL = 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/CEO%20AMIT.png';
-const QUOTE_TEXT = 'Everyone understands what, but a very few understand why!';
 
-function FounderSceneContent({ progress }: { progress: MotionValue<number> }) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
+export default function Founder() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const textColRef = useRef<HTMLDivElement>(null);
+  const imageColRef = useRef<HTMLDivElement>(null);
 
-  const accentColor = useTransform(
-    progress,
-    [0.08, 0.4],
-    [isDark ? '#555555' : '#8E8E98', isDark ? '#22C55E' : '#FF5500']
-  );
-  
-  const quoteColor = useTransform(
-    progress,
-    [0.1, 0.45],
-    [isDark ? '#777777' : '#71717A', isDark ? '#FFFFFF' : '#0A0A0C']
-  );
-  
-  const accentGlow = useTransform(
-    progress,
-    [0.1, 0.45],
-    ['0 0 0px transparent', isDark ? '0 0 24px rgba(34,197,94,0.3)' : '0 0 24px rgba(255,85,0,0.22)']
-  );
-  
-  const portraitScale = useTransform(progress, [0, 1], [0.98, 1.02]);
+  useEffect(() => {
+    if (isReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        textColRef.current,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+
+      gsap.fromTo(
+        imageColRef.current,
+        { opacity: 0, scale: 0.96 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className={styles.sceneContainer}>
-      <div className={styles.container}>
+    <section id="about" ref={sectionRef} className={`section ${styles.founderSection}`}>
+      <div className="section-container">
         <div className={styles.grid}>
-          {/* Left Column: Titles & Texts */}
-          <div className={styles.textCol}>
-            <div className={styles.topArea}>
-              <span className={styles.label}>
-                <span className={styles.accent}>07</span> — LEADERSHIP
-              </span>
-              <h2 className={styles.headline}>
-                Technology built with discipline. <motion.span style={{ color: accentColor }}>Led with clarity.</motion.span>
-              </h2>
+          {/* Left Column: Narrative & Philosophy */}
+          <div ref={textColRef} className={styles.textCol}>
+            <div className="label-eyebrow">
+              <span className="label-dot" />
+              <span>07 — LEADERSHIP & PHILOSOPHY</span>
             </div>
 
-            <motion.blockquote className={styles.quoteBlock} style={{ boxShadow: accentGlow }}>
-              <motion.p className={styles.quoteText} style={{ color: quoteColor }}>
-                &ldquo;
-                <TypewriterText
-                  text={QUOTE_TEXT}
-                  speed={28}
-                  delay={200}
-                  loop={false}
-                  showCursor={true}
-                />
-                &rdquo;
-              </motion.p>
-            </motion.blockquote>
+            <h2 className={styles.headline}>
+              Technology built with discipline.{' '}
+              <span className={styles.accentText}>Led with clarity.</span>
+            </h2>
 
-            <div className={styles.philosophyText}>
-              <p>
-                Great software isn’t just about writing great code. It’s about understanding why you’re building it in the first place.
+            <blockquote className={styles.quoteCard}>
+              <div className={styles.quoteIcon}>
+                <Quote size={20} />
+              </div>
+              <p className={styles.quoteText}>
+                “Everyone understands what to build, but very few understand why. True engineering leadership starts with the purpose behind the product.”
               </p>
-              <p>
-                Anyone who knows how to code can build software. But building the right software takes something more — understanding the vision, the business, and the people behind it.
+            </blockquote>
+
+            <div className={styles.narrativeBody}>
+              <p className={styles.leadPara}>
+                Great software isn’t just about writing efficient code. It’s about deeply understanding the business mechanics, human incentives, and technical risks before executing.
               </p>
-              <p>
-                At ZeeTech, we don’t just take an idea and turn it into code. We challenge it, shape it, and make it better — so what we build doesn’t just work, but actually moves the business forward.
+              <p className={styles.para}>
+                Anyone with access to modern tools can build an app. But building the right software — software that handles high transaction volume, remains secure under load, and scales seamlessly — requires experienced engineering judgment.
               </p>
+              <p className={styles.para}>
+                At ZeeTech, we don’t treat client projects like isolated tickets. We treat them as critical business assets where our reputation is on the line with every deployment.
+              </p>
+            </div>
+
+            <div className={styles.founderCredentials}>
+              <div className={styles.credItem}>
+                <CheckCircle2 size={16} className={styles.credIcon} />
+                <span>Hands-on architectural review on every client delivery</span>
+              </div>
+              <div className={styles.credItem}>
+                <CheckCircle2 size={16} className={styles.credIcon} />
+                <span>Zero outsourcing — core engineering led in-house</span>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: CEO Image & Card */}
-          <div className={styles.imageCol}>
-            <motion.div className={styles.portraitCard} style={{ scale: portraitScale }}>
-              <div className={styles.portraitFrame}>
+          {/* Right Column: Founder Executive Card */}
+          <div ref={imageColRef} className={styles.imageCol}>
+            <div className={styles.portraitCard}>
+              <div className={styles.imageFrame}>
                 <Image
                   src={CEO_IMAGE_URL}
-                  alt="AMIT GHOSH — Founder and CEO, ZeeTech"
+                  alt="Amit Ghosh — Founder and CEO, ZeeTech"
                   fill
-                  className={styles.portraitImage}
+                  className={styles.portraitImg}
                   sizes="(max-width: 768px) 100vw, 480px"
                   priority
                 />
-                <div className={styles.cornerTL} />
-                <div className={styles.cornerTR} />
-                <div className={styles.cornerBL} />
-                <div className={styles.cornerBR} />
+                <div className={styles.imageVignette} />
+                <div className={styles.verifiedTag}>
+                  <span className={styles.verifiedDot} />
+                  <span>Founder & Chief Architect</span>
+                </div>
               </div>
 
-              <div className={styles.founderMeta}>
-                <div className={styles.founderName}>AMIT GHOSH</div>
-                <div className={styles.founderTitle}>Founder and CEO, ZeeTech</div>
+              <div className={styles.cardFooter}>
+                <div>
+                  <h3 className={styles.founderName}>AMIT GHOSH</h3>
+                  <p className={styles.founderRole}>Founder & CEO · ZeeTech Solutions</p>
+                  <p className={styles.founderBase}>Dhaka, Bangladesh · Global Client Engagements</p>
+                </div>
+
+                <div className={styles.socialRow}>
+                  <a
+                    href="mailto:hello@zeetech.com"
+                    className={styles.socialBtn}
+                    aria-label="Email Amit Ghosh"
+                    title="Direct Email"
+                  >
+                    <Mail size={16} />
+                  </a>
+                  <a
+                    href="#contact"
+                    className={styles.bookConsultBtn}
+                  >
+                    <span>Consult with Amit</span>
+                    <ArrowUpRight size={14} />
+                  </a>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-export default function Founder() {
-  const { theme } = useTheme();
-  return (
-    <PinnedScene id="about" trackHeight="180vh">
-      {(progress) => <FounderSceneContent key={theme} progress={progress} />}
-    </PinnedScene>
+    </section>
   );
 }

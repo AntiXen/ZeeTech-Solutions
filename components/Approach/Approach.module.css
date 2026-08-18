@@ -1,199 +1,213 @@
-.sceneContainer {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--margin);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  box-sizing: border-box;
+.approachSection {
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--divider);
+  border-bottom: 1px solid var(--divider);
+  position: relative;
 }
 
-.container {
-  width: 100%;
-}
-
-.topArea {
-  margin-bottom: 28px;
-}
-
-.label {
-  display: block;
-  font-size: 11px;
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 12px;
+.sectionHeader {
+  max-width: 820px;
+  margin-bottom: 48px;
 }
 
 .headline {
-  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  font-size: var(--size-display);
   font-weight: var(--weight-extrabold);
-  line-height: var(--leading-tight);
   letter-spacing: var(--tracking-display);
-  color: var(--text-primary);
-  margin: 0 0 10px 0;
+  line-height: var(--leading-display);
+  margin-bottom: 16px;
 }
 
-.accent {
+.accentText {
   color: var(--accent);
 }
 
-.supportingCopy {
-  font-size: clamp(1rem, 1.25vw, 1.2rem);
+.subheadline {
+  font-size: var(--size-body-lg);
   color: var(--text-secondary);
-  margin: 0;
-  max-width: 640px;
-  line-height: 1.5;
+  line-height: 1.65;
 }
 
-/* Timeline Layout */
-.timelineWrapper {
-  position: relative;
-  width: 100%;
-  margin: 32px 0 28px 0;
-}
-
-.lineBg {
-  position: absolute;
-  top: 59px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: var(--divider);
-  z-index: 0;
-}
-
-.lineFill {
-  position: absolute;
-  top: 59px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: var(--accent);
-  transform-origin: left;
-  z-index: 1;
-  box-shadow: 0 0 10px var(--accent-glow);
-}
-
+/* Steps Grid */
 .stepsGrid {
-  position: relative;
-  z-index: 2;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  width: 100%;
+  margin-bottom: 44px;
 }
 
-.stepCol {
+@media (max-width: 992px) {
+  .stepsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stepCard {
+  background-color: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  transition: all var(--duration-normal) var(--ease-out);
 }
 
-.stepNumber {
-  font-size: clamp(2.2rem, 3.4vw, 3.4rem);
-  font-weight: var(--weight-extrabold);
-  line-height: 1;
-  letter-spacing: -0.035em;
-  height: 44px;
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: 6px;
+.stepCard:hover {
+  border-color: var(--card-border-hover);
+  transform: translateY(-3px);
+  background-color: var(--bg-card-hover);
+  box-shadow: var(--card-shadow-hover);
 }
 
-.dotCell {
-  width: 100%;
-  height: 18px;
+.stepHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 14px;
 }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1.5px solid var(--divider-strong);
-  box-sizing: border-box;
+.stepIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
 }
 
-.stepHeading {
-  font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+.stepNum {
+  font-family: monospace;
+  font-size: 0.75rem;
   font-weight: var(--weight-bold);
-  margin: 0 0 6px 0;
-  letter-spacing: var(--tracking-tight);
+  color: var(--accent);
+  padding: 4px 10px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-full);
 }
 
-.stepDescription {
-  font-size: clamp(0.85rem, 0.98vw, 0.92rem);
-  line-height: 1.5;
-  margin: 0;
-  padding-right: 8px;
-}
-
-/* Bottom Bar */
-.bottomBar {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  border-top: 1px solid var(--divider);
-  padding-top: 20px;
-  flex-wrap: wrap;
-}
-
-.bottomPrompt {
-  font-size: 12px;
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+.stepPhase {
+  font-size: 0.6875rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.12em;
   color: var(--text-muted);
-  flex-shrink: 0;
+  margin-bottom: 6px;
 }
 
-.pointsList {
+.stepTitle {
+  font-size: 1.15rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.35;
+}
+
+.stepDesc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.activitiesList {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.activityItem {
   display: flex;
   align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.pointTag {
-  font-size: 13.5px;
-  color: var(--text-secondary);
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-primary);
   font-weight: var(--weight-medium);
 }
 
-.pointNum {
+.actCheck {
   color: var(--accent);
-  font-weight: var(--weight-bold);
-  font-size: 12px;
+  flex-shrink: 0;
 }
 
-@media (max-width: 1024px) {
-  .stepsGrid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .lineBg,
-  .lineFill {
-    display: none;
-  }
+/* Discovery Strip */
+.discoveryStrip {
+  padding: 28px 32px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(14px);
+}
+
+.discoveryHeader {
+  margin-bottom: 20px;
+}
+
+.discoveryBadge {
+  font-size: 0.6875rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.discoveryTitle {
+  font-size: 1.1rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+}
+
+.checkpointsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 @media (max-width: 768px) {
-  .sceneContainer {
-    padding: 60px 20px 20px;
+  .checkpointsGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .stepsGrid {
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .checkpointsGrid {
+    grid-template-columns: 1fr;
   }
-  .bottomBar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+}
+
+.checkpointTag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-sm);
+}
+
+.checkpointNum {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: var(--weight-bold);
+  color: var(--accent);
+}
+
+.checkpointText {
+  font-size: 0.85rem;
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
 }

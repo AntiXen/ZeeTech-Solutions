@@ -1,182 +1,193 @@
 'use client';
 
-import React from 'react';
-import { motion, useTransform, MotionValue } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
+import { Search, Compass, Palette, Code, Rocket, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
 import styles from './Approach.module.css';
-import PinnedScene from '@/components/shared/PinnedScene/PinnedScene';
-import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
 
 interface Step {
-  id: string;
-  number: string;
-  heading: string;
+  num: string;
+  phase: string;
+  icon: React.ElementType;
+  title: string;
   description: string;
+  activities: string[];
 }
 
-const steps: Step[] = [
-  { id: 's1', number: '01', heading: 'Understand', description: 'We map the business, the users, the problem and the outcome you actually need.' },
-  { id: 's2', number: '02', heading: 'Challenge', description: 'We question assumptions when a better path exists — politely, but firmly.' },
-  { id: 's3', number: '03', heading: 'Design', description: 'We shape the product experience before writing code, so the build starts right.' },
-  { id: 's4', number: '04', heading: 'Build', description: 'We engineer in focused cycles, with working software and honest communication.' },
-  { id: 's5', number: '05', heading: 'Launch', description: 'We ship carefully, monitor closely and fix what the real world reveals.' },
-  { id: 's6', number: '06', heading: 'Improve', description: 'We measure, learn and keep improving the product long after launch.' },
+const lifecycleSteps: Step[] = [
+  {
+    num: '01',
+    phase: 'DISCOVER & AUDIT',
+    icon: Search,
+    title: 'Understand the Unit Economics & Bottlenecks',
+    description: 'We conduct rigorous discovery interviews, map user journeys, and audit your existing technology stack to identify real constraints.',
+    activities: ['Stakeholder Interviews', 'User Workflow Mapping', 'Architecture Audit', 'Scope & Budget Alignment'],
+  },
+  {
+    num: '02',
+    phase: 'CHALLENGE & STRATEGIZE',
+    icon: Compass,
+    title: 'Challenge Assumptions Before Writing Code',
+    description: 'We stress-test feature lists against market realities. If an alternative technical path saves 40% cost or 2x speed, we propose it firmly.',
+    activities: ['Trade-off Analysis', 'Tech Stack Selection', 'API & Data Modeling', 'Technical Roadmap'],
+  },
+  {
+    num: '03',
+    phase: 'DESIGN & PROTOTYPE',
+    icon: Palette,
+    title: 'Validate UX with Clickable High-Fidelity Prototypes',
+    description: 'We create interactive Figma prototypes and design systems to validate the complete user experience with real stakeholders before development.',
+    activities: ['Design Systems Tokens', 'High-Fidelity Wireframes', 'Interactive Prototypes', 'Design-to-Code Specs'],
+  },
+  {
+    num: '04',
+    phase: 'SPRINT & BUILD',
+    icon: Code,
+    title: 'Disciplined Engineering in 2-Week Sprints',
+    description: 'Clean, type-safe architecture with continuous integration, automated unit tests, and bi-weekly working software demos.',
+    activities: ['Bi-Weekly Working Demos', 'Automated CI/CD Tests', 'Code Reviews & Audits', 'Staging Environments'],
+  },
+  {
+    num: '05',
+    phase: 'LAUNCH & STRESS-TEST',
+    icon: Rocket,
+    title: 'Zero-Downtime Deployment & Observability',
+    description: 'Comprehensive load testing, multi-region cloud rollout, automated fallback routines, and end-to-end Sentry telemetry.',
+    activities: ['Load & Penetration Testing', 'Cloud Provisioning', 'Telemetry & Alerting', 'Production Cutover'],
+  },
+  {
+    num: '06',
+    phase: 'MEASURE & EVOLVE',
+    icon: RefreshCw,
+    title: 'Continuous Optimization & SLA Support',
+    description: 'Software compounds in value when continuously refined. We monitor telemetry, optimize conversion funnels, and ship new roadmap features.',
+    activities: ['Telemetry Analysis', 'Conversion Tuning', 'SLA Technical Support', 'Ongoing Feature Sprints'],
+  },
 ];
 
-const understandingPoints = [
-  { num: '01', text: 'Business' },
-  { num: '02', text: 'Users' },
-  { num: '03', text: 'Problem' },
-  { num: '04', text: 'Desired outcome' },
-  { num: '05', text: 'Constraints' },
-  { num: '06', text: 'Opportunity' },
+const consultationCheckpoints = [
+  { id: '1', title: 'Business Model Viability' },
+  { id: '2', title: 'Core User Personas' },
+  { id: '3', title: 'Critical Failure Points' },
+  { id: '4', title: 'Target Latency & Volume' },
+  { id: '5', title: 'Security & Compliance' },
+  { id: '6', title: 'Long-term Maintenance Cost' },
 ];
 
-interface StepItemProps {
-  step: Step;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-  isDark: boolean;
-}
+export default function Approach() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const stepsContainerRef = useRef<HTMLDivElement>(null);
 
-function StepColumn({ step, index, total, progress, isDark }: StepItemProps) {
-  const target = index / (total - 1);
-  const accentHex = isDark ? '#22C55E' : '#FF5500';
-  const inactiveDotBg = isDark ? '#1a1a1a' : '#E5E7EB';
-  const inactiveBorder = isDark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.18)';
+  useEffect(() => {
+    if (isReducedMotion()) return;
 
-  const numberColor = useTransform(
-    progress,
-    [Math.max(0, target - 0.12), target, Math.min(1, target + 0.18)],
-    [isDark ? '#555555' : '#8E8E98', accentHex, isDark ? '#888888' : '#52525B']
-  );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        headerRef.current,
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
 
-  const dotBg = useTransform(
-    progress,
-    [Math.max(0, target - 0.08), target, Math.min(1, target + 0.15)],
-    [inactiveDotBg, accentHex, accentHex]
-  );
+      const cards = stepsContainerRef.current?.querySelectorAll(`.${styles.stepCard}`);
+      if (cards && cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: stepsContainerRef.current,
+              start: 'top 75%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      }
+    }, sectionRef);
 
-  const dotBorder = useTransform(
-    progress,
-    [Math.max(0, target - 0.08), target, Math.min(1, target + 0.15)],
-    [inactiveBorder, accentHex, accentHex]
-  );
-
-  const dotScale = useTransform(
-    progress,
-    [Math.max(0, target - 0.08), target, Math.min(1, target + 0.15)],
-    [1, 1.4, 1.15]
-  );
-
-  const dotGlow = useTransform(
-    progress,
-    [Math.max(0, target - 0.08), target, Math.min(1, target + 0.15)],
-    ['none', isDark ? '0 0 12px rgba(34,197,94,0.7)' : '0 0 12px rgba(255,85,0,0.5)', 'none']
-  );
-
-  const headingColor = useTransform(
-    progress,
-    [Math.max(0, target - 0.12), target, Math.min(1, target + 0.18)],
-    [isDark ? '#777777' : '#8E8E98', isDark ? '#FFFFFF' : '#0A0A0C', isDark ? '#CCCCCC' : '#52525B']
-  );
-
-  const descColor = useTransform(
-    progress,
-    [Math.max(0, target - 0.12), target, Math.min(1, target + 0.18)],
-    [isDark ? '#555555' : '#8E8E98', isDark ? '#9E9E9E' : '#52525B', isDark ? '#777777' : '#8E8E98']
-  );
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className={styles.stepCol}>
-      <motion.div className={styles.stepNumber} style={{ color: numberColor }}>
-        {step.number}
-      </motion.div>
-      <div className={styles.dotCell}>
-        <motion.div 
-          className={styles.dot} 
-          style={{ 
-            backgroundColor: dotBg, 
-            borderColor: dotBorder, 
-            scale: dotScale, 
-            boxShadow: dotGlow 
-          }} 
-        />
-      </div>
-      <motion.h4 className={styles.stepHeading} style={{ color: headingColor }}>
-        {step.heading}
-      </motion.h4>
-      <motion.p className={styles.stepDescription} style={{ color: descColor }}>
-        {step.description}
-      </motion.p>
-    </div>
-  );
-}
-
-function ApproachSceneContent({ progress }: { progress: MotionValue<number> }) {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-
-  const accentColor = useTransform(
-    progress,
-    [0.08, 0.4],
-    [isDark ? '#555555' : '#8E8E98', isDark ? '#22C55E' : '#FF5500']
-  );
-
-  return (
-    <div className={styles.sceneContainer}>
-      <div className={styles.container}>
-        <div className={styles.topArea}>
-          <span className={styles.label}>
-            <span className={styles.accent}>06</span> — HOW WE THINK
-          </span>
+    <section id="approach" ref={sectionRef} className={`section ${styles.approachSection}`}>
+      <div className="section-container">
+        {/* Header */}
+        <div ref={headerRef} className={styles.sectionHeader}>
+          <div className="label-eyebrow">
+            <span className="label-dot" />
+            <span>06 — HOW WE OPERATE</span>
+          </div>
           <h2 className={styles.headline}>
-            We don’t start with code. <motion.span style={{ color: accentColor }}>We start with questions.</motion.span>
+            We don’t start with code.{' '}
+            <span className={styles.accentText}>We start with rigorous questions.</span>
           </h2>
-          <p className={styles.supportingCopy}>
-            The consulting comes before the engineering — and it’s why the engineering works.
+          <p className={styles.subheadline}>
+            The consulting comes before the engineering — and it’s why our software ships on time, stays within budget, and actually performs in the market.
           </p>
         </div>
 
-        {/* 6-Step Diagrammatic Track */}
-        <div className={styles.timelineWrapper}>
-          <div className={styles.lineBg} />
-          <motion.div className={styles.lineFill} style={{ scaleX: progress }} />
-          <div className={styles.stepsGrid}>
-            {steps.map((step, index) => (
-              <StepColumn 
-                key={`${step.id}-${theme}`} 
-                step={step} 
-                index={index} 
-                total={steps.length} 
-                progress={progress} 
-                isDark={isDark}
-              />
-            ))}
-          </div>
+        {/* 6-Step Lifecycle Grid */}
+        <div ref={stepsContainerRef} className={styles.stepsGrid}>
+          {lifecycleSteps.map((step) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.num} className={styles.stepCard}>
+                <div className={styles.stepHeader}>
+                  <div className={styles.stepIcon}>
+                    <Icon size={20} />
+                  </div>
+                  <span className={styles.stepNum}>STEP {step.num}</span>
+                </div>
+
+                <div className={styles.stepPhase}>{step.phase}</div>
+                <h3 className={styles.stepTitle}>{step.title}</h3>
+                <p className={styles.stepDesc}>{step.description}</p>
+
+                <div className={styles.activitiesList}>
+                  {step.activities.map((act, i) => (
+                    <div key={i} className={styles.activityItem}>
+                      <CheckCircle2 size={13} className={styles.actCheck} />
+                      <span>{act}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Integrated Bottom Understanding Bar */}
-        <div className={styles.bottomBar}>
-          <span className={styles.bottomPrompt}>Before recommending technology, we understand:</span>
-          <div className={styles.pointsList}>
-            {understandingPoints.map((point) => (
-              <span key={point.num} className={styles.pointTag}>
-                <span className={styles.pointNum}>{point.num}</span> {point.text}
-              </span>
+        {/* Pre-Build Discovery Checkpoints Strip */}
+        <div className={styles.discoveryStrip}>
+          <div className={styles.discoveryHeader}>
+            <span className={styles.discoveryBadge}>PRE-ENGINEERING RIGOR</span>
+            <h4 className={styles.discoveryTitle}>Every project begins with a 6-point foundational audit:</h4>
+          </div>
+
+          <div className={styles.checkpointsGrid}>
+            {consultationCheckpoints.map((pt) => (
+              <div key={pt.id} className={styles.checkpointTag}>
+                <span className={styles.checkpointNum}>0{pt.id}</span>
+                <span className={styles.checkpointText}>{pt.title}</span>
+              </div>
             ))}
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-export default function Approach() {
-  const { theme } = useTheme();
-  return (
-    <PinnedScene id="approach" trackHeight="220vh">
-      {(progress) => <ApproachSceneContent key={theme} progress={progress} />}
-    </PinnedScene>
+    </section>
   );
 }
