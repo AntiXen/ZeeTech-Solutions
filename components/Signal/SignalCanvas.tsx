@@ -1,10 +1,14 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, MotionValue } from 'framer-motion';
 import styles from './Signal.module.css';
 
-export default function SignalCanvas() {
+interface SignalCanvasProps {
+  scrollProgress?: MotionValue<number>;
+}
+
+export default function SignalCanvas({ scrollProgress: _scrollProgress }: SignalCanvasProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
 
