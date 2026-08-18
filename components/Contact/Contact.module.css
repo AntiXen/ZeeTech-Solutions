@@ -292,9 +292,20 @@
   transition: background-color var(--duration-normal) var(--ease-out), border-color var(--duration-normal) var(--ease-out);
 }
 
+.whatsappIcon {
+  color: var(--accent);
+  fill: var(--accent);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
 .whatsappBtn:hover {
   background-color: var(--divider-faint);
-  border-color: var(--divider-strong);
+  border-color: var(--accent);
+}
+
+.whatsappBtn:hover .whatsappIcon {
+  transform: scale(1.1);
 }
 
 @media (max-width: 1024px) {

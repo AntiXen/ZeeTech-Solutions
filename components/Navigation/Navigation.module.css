@@ -215,7 +215,7 @@
 }
 
 .mobileContact:hover {
-  color: var(--text-primary);
+  color: var(--accent);
 }
 
 .mobileThemeLabel {

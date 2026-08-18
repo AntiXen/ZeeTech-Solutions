@@ -8,14 +8,14 @@
   gap: 8px;
   background-color: var(--bg-elevated, #171717);
   border: 1px solid var(--divider, rgba(255,255,255,0.08));
-  color: var(--text-secondary, #858585);
+  color: var(--text-primary, #F0EDE8);
   padding: 10px 16px;
   border-radius: 999px;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
+  transition: all 0.25s ease;
   opacity: 0;
   transform: scale(0.9) translateY(20px);
   pointer-events: none;
@@ -28,8 +28,32 @@
 }
 
 .fab:hover {
-  border-color: rgba(255,255,255,0.3);
-  color: var(--text-primary, #F0EDE8);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 6px 24px var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+.whatsappIcon {
+  color: var(--accent);
+  fill: var(--accent);
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.fab:hover .whatsappIcon {
+  transform: scale(1.1);
+}
+
+.fabText {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  transition: color var(--duration-fast) ease;
+}
+
+.fab:hover .fabText {
+  color: var(--text-primary);
 }
 
 @media (max-width: 767px) {
