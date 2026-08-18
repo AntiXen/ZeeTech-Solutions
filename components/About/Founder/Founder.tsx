@@ -9,7 +9,7 @@ import { useTheme } from '@/components/shared/ThemeProvider/ThemeProvider';
 import TypewriterText from '@/components/shared/TypewriterText/TypewriterText';
 
 const CEO_IMAGE_URL = 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/CEO%20AMIT.png';
-const QUOTE_TEXT = 'Everyone understands what, but a very few understand why! We build technology with the discipline of an engineering team and the strategic clarity of a product owner.';
+const QUOTE_TEXT = 'Everyone understands what, but a very few understand why!';
 
 function FounderSceneContent({ progress }: { progress: MotionValue<number> }) {
   const { theme } = useTheme();
@@ -55,7 +55,7 @@ function FounderSceneContent({ progress }: { progress: MotionValue<number> }) {
                 &ldquo;
                 <TypewriterText
                   text={QUOTE_TEXT}
-                  speed={26}
+                  speed={28}
                   delay={200}
                   loop={false}
                   showCursor={true}
@@ -66,10 +66,13 @@ function FounderSceneContent({ progress }: { progress: MotionValue<number> }) {
 
             <div className={styles.philosophyText}>
               <p>
-                ZeeTech was founded on a straightforward observation: the software industry is full of developers waiting for tickets and consultants who don&apos;t write code.
+                Great software isn’t just about writing great code. It’s about understanding why you’re building it in the first place.
               </p>
               <p>
-                We bridge that gap. Every project is led by experienced engineers who understand business models, unit economics, and long-term architectural health.
+                Anyone who knows how to code can build software. But building the right software takes something more — understanding the vision, the business, and the people behind it.
+              </p>
+              <p>
+                At ZeeTech, we don’t just take an idea and turn it into code. We challenge it, shape it, and make it better — so what we build doesn’t just work, but actually moves the business forward.
               </p>
             </div>
           </div>
