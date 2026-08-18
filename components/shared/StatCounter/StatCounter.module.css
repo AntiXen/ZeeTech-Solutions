@@ -1,0 +1,57 @@
+.statCard {
+  background-color: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.statCard:hover {
+  border-color: var(--card-border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.statValue {
+  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+  font-weight: var(--weight-extrabold);
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.prefix {
+  font-size: 0.7em;
+  color: var(--accent);
+}
+
+.suffix {
+  font-size: 0.75em;
+  color: var(--accent);
+  margin-left: 2px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  font-size: 0.95rem;
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.statDesc {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}

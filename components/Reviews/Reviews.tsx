@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, CheckCircle2, Star, Building2, MapPin, TrendingUp } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './Reviews.module.css';
 
 interface Review {

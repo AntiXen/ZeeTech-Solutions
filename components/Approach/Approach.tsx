@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Search, Compass, Palette, Code, Rocket, RefreshCw, CheckCircle2 } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './Approach.module.css';
 
 interface Step {

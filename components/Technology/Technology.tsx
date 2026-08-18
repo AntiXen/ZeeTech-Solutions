@@ -2,8 +2,8 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { TechLogo } from './TechLogos';
-import { Layout, Server, Cloud, Cpu, ArrowUpRight, CheckCircle2 } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { Layout, Server, Cloud, Cpu, CheckCircle2 } from 'lucide-react';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './Technology.module.css';
 
 interface TechItem {

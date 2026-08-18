@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Target, Lightbulb, Shield, Users } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './WhyZeeTech.module.css';
 
 interface Principle {

@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { Quote, CheckCircle2, Mail, ArrowUpRight } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './Founder.module.css';
 
 const CEO_IMAGE_URL = 'https://pxkwlycravmqayuicqyj.supabase.co/storage/v1/object/public/ZeeTech/CEO%20AMIT.png';

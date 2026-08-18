@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { Briefcase, Cpu, Lightbulb, Compass, Handshake, ArrowUpRight } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { Briefcase, Cpu, Lightbulb, Compass, Handshake } from 'lucide-react';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './Proposition.module.css';
 
 const pillars = [

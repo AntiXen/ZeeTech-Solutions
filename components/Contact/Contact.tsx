@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from 'react';
 import { Mail, ShieldCheck, Clock, CheckCircle2, MessageSquare, ArrowUpRight } from 'lucide-react';
 import ContactForm from './ContactForm';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './Contact.module.css';
 
 export default function Contact() {

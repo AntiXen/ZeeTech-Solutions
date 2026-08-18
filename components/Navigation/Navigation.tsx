@@ -62,7 +62,6 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const overlayRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {

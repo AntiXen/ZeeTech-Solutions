@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, ChevronDown, CheckCircle2, ShieldCheck, Zap, Layers } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './Hero.module.css';
 import SignalCanvas from '@/components/Signal/SignalCanvas';
 

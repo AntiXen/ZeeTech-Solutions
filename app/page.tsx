@@ -1,5 +1,6 @@
 import Hero from '@/components/Hero/Hero';
 import Proposition from '@/components/Proposition/Proposition';
+import Impact from '@/components/Impact/Impact';
 import Capabilities from '@/components/Capabilities/Capabilities';
 import WhatWeBuild from '@/components/WhatWeBuild/WhatWeBuild';
 import SelectedWork from '@/components/SelectedWork/SelectedWork';
@@ -18,6 +19,7 @@ export default function Home() {
       <ScrollReset />
       <Hero />
       <Proposition />
+      <Impact />
       <Capabilities />
       <WhatWeBuild />
       <SelectedWork />

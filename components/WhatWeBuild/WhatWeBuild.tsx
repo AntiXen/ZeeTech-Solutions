@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Layers, Server, Cpu, CheckCircle2, ArrowRight } from 'lucide-react';
-import { gsap, ScrollTrigger, isReducedMotion } from '@/lib/gsap';
+import { gsap, isReducedMotion } from '@/lib/gsap';
 import styles from './WhatWeBuild.module.css';
 
 interface SolutionItem {
@@ -156,7 +156,6 @@ export default function WhatWeBuild() {
   }, []);
 
   const currentCat = categories[activeCategory];
-  const CategoryIcon = currentCat.icon;
 
   return (
     <section id="build" ref={sectionRef} className={`section ${styles.buildSection}`}>
