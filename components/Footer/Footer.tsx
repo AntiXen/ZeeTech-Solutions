@@ -25,7 +25,7 @@ export default function Footer() {
           
           <div className={styles.contactLinks}>
             <a href="mailto:hello@zeetech.com" className={styles.link}>hello@zeetech.com</a>
-            <a href="tel:+8801700000000" className={styles.link}>+880 1700 000 000</a>
+            <a href="/api/whatsapp" target="_blank" rel="noopener noreferrer" className={styles.link}>WhatsApp Direct ↗</a>
             <span className={styles.link} style={{ cursor: 'default' }}>Dhaka, Bangladesh</span>
             <a href="#" target="_blank" rel="noopener noreferrer" className={styles.link}>LinkedIn</a>
           </div>
