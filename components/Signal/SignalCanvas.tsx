@@ -55,6 +55,10 @@ export default function SignalCanvas() {
       const cellW = width / cols;
       const cellH = height / rows;
 
+      const orangeRgb = '234, 88, 12';
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const baseRgb = isLight ? '71, 85, 105' : '148, 163, 184';
+
       // Draw subtle grid intersections & dynamic connecting node pulses
       for (let i = 1; i < cols; i++) {
         for (let j = 1; j < rows; j++) {
@@ -74,17 +78,19 @@ export default function SignalCanvas() {
           const py = baseY + (dy / dist || 0) * influence * -18 + wave;
 
           // Dot alpha & size
-          const alpha = 0.06 + influence * 0.35;
-          const size = 1.2 + influence * 2;
+          const alpha = 0.08 + influence * 0.45;
+          const size = 1.2 + influence * 2.2;
 
-          ctx.fillStyle = influence > 0.35 ? 'rgba(16, 185, 129, ' + (alpha * 1.5) + ')' : 'rgba(148, 163, 184, ' + alpha + ')';
+          ctx.fillStyle = influence > 0.35 
+            ? `rgba(${orangeRgb}, ${Math.min(1, alpha * 1.8)})` 
+            : `rgba(${baseRgb}, ${alpha})`;
           ctx.beginPath();
           ctx.arc(px, py, size, 0, Math.PI * 2);
           ctx.fill();
 
           // Connect nearby dots with fine hairline if near cursor
           if (influence > 0.45 && i < cols - 1 && j < rows - 1) {
-            ctx.strokeStyle = 'rgba(16, 185, 129, ' + (influence * 0.18) + ')';
+            ctx.strokeStyle = `rgba(${orangeRgb}, ${influence * 0.25})`;
             ctx.lineWidth = 0.75;
             ctx.beginPath();
             ctx.moveTo(px, py);
@@ -96,8 +102,8 @@ export default function SignalCanvas() {
 
       // Draw subtle ambient glow around cursor
       const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, width * 0.3);
-      gradient.addColorStop(0, 'rgba(16, 185, 129, 0.08)');
-      gradient.addColorStop(0.5, 'rgba(6, 182, 212, 0.02)');
+      gradient.addColorStop(0, `rgba(${orangeRgb}, 0.08)`);
+      gradient.addColorStop(0.5, `rgba(${orangeRgb}, 0.02)`);
       gradient.addColorStop(1, 'transparent');
 
       ctx.fillStyle = gradient;
