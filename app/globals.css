@@ -69,10 +69,10 @@
   --tracking-label: 0.14em;
 
   /* Leading */
-  --leading-display: 0.96;
-  --leading-heading: 1.12;
+  --leading-display: 1.10;
+  --leading-heading: 1.24;
   --leading-body: 1.68;
-  --leading-tight: 1.25;
+  --leading-tight: 1.35;
 
   /* Motion & Easing */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

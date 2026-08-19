@@ -177,7 +177,7 @@ export default function WhatWeBuild() {
         </div>
 
         {/* Category Selector Tabs */}
-        <div className={styles.categoryTabs}>
+        <div className={styles.categoryTabs} role="tablist" aria-label="Select build category">
           {categories.map((cat, idx) => {
             const Icon = cat.icon;
             const isActive = idx === activeCategory;
@@ -188,6 +188,8 @@ export default function WhatWeBuild() {
                 className={`${styles.catTab} ${isActive ? styles.catTabActive : ''}`}
                 role="tab"
                 aria-selected={isActive}
+                aria-controls={`build-panel-${cat.letter}`}
+                id={`build-tab-${cat.letter}`}
               >
                 <div className={styles.catTabLeft}>
                   <div className={styles.catTabIcon}>
@@ -214,6 +216,9 @@ export default function WhatWeBuild() {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentCat.letter}
+            id={`build-panel-${currentCat.letter}`}
+            role="tabpanel"
+            aria-labelledby={`build-tab-${currentCat.letter}`}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}

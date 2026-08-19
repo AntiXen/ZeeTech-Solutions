@@ -86,7 +86,7 @@ export default function Hero() {
           {/* Eyebrow badge */}
           <div className={styles.eyebrowWrapper}>
             <div className="label-eyebrow">
-              <span className="label-dot" />
+              <span className={`label-dot ${styles.bannerDot}`} />
               <span>STRATEGIC TECHNOLOGY & ENGINEERING PARTNER</span>
             </div>
           </div>

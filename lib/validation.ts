@@ -52,8 +52,8 @@ export function validateContactForm(data: ContactFormData): ValidationResult {
   }
 
   // Details
-  if (!data.details || data.details.trim().length < 10) {
-    errors.details = 'Please share a few more details about your project.';
+  if (!data.details || data.details.trim().length < 2) {
+    errors.details = 'Please share a few details about your project.';
   } else if (data.details.length > 5000) {
     errors.details = 'Message is too long (maximum 5,000 characters).';
   }
