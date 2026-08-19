@@ -134,10 +134,16 @@
   cursor: pointer;
 }
 
-.techBadge:hover {
+.techBadge:hover,
+.techBadgeActive {
   border-color: var(--accent);
   background-color: var(--accent-soft);
   transform: translateY(-2px);
+}
+
+.techBadge:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .badgeLogo {

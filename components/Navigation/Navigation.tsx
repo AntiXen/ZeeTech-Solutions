@@ -101,7 +101,7 @@ export default function Navigation() {
     };
   }, []);
 
-  // Handle body scroll and inert for accessibility
+  // Handle body scroll, inert, and Escape key for accessibility
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -109,6 +109,23 @@ export default function Navigation() {
       if (main) {
         main.setAttribute('inert', '');
       }
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsMenuOpen(false);
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+        const mainEl = document.querySelector('main');
+        if (mainEl) {
+          mainEl.removeAttribute('inert');
+        }
+      };
     } else {
       document.body.style.overflow = '';
       const main = document.querySelector('main');
@@ -116,14 +133,6 @@ export default function Navigation() {
         main.removeAttribute('inert');
       }
     }
-
-    return () => {
-      document.body.style.overflow = '';
-      const main = document.querySelector('main');
-      if (main) {
-        main.removeAttribute('inert');
-      }
-    };
   }, [isMenuOpen]);
 
   const toggleMenu = () => {

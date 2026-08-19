@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, FormEvent } from 'react';
-import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { Send, CheckCircle2, AlertCircle, Loader2, ChevronDown } from 'lucide-react';
 import styles from './Contact.module.css';
 import { getWhatsAppUrl } from '@/lib/whatsapp';
 
@@ -162,17 +162,20 @@ export default function ContactForm() {
           <label htmlFor="contact-budget" className={styles.inputLabel}>
             Estimated Budget Range
           </label>
-          <select
-            id="contact-budget"
-            name="budget"
-            className={styles.select}
-            disabled={status === 'loading'}
-          >
-            <option value="Not sure yet">Not sure yet / Flexible</option>
-            <option value="$10,000 – $25,000">$10,000 – $25,000 (MVP / Focused Build)</option>
-            <option value="$25,000 – $50,000">$25,000 – $50,000 (Full Platform Release)</option>
-            <option value="$50,000 – $100,000+">$50,000 – $100,000+ (Enterprise Scale)</option>
-          </select>
+          <div className={styles.selectWrapper}>
+            <select
+              id="contact-budget"
+              name="budget"
+              className={styles.select}
+              disabled={status === 'loading'}
+            >
+              <option value="Not sure yet">Not sure yet / Flexible</option>
+              <option value="$10,000 – $25,000">$10,000 – $25,000 (MVP / Focused Build)</option>
+              <option value="$25,000 – $50,000">$25,000 – $50,000 (Full Platform Release)</option>
+              <option value="$50,000 – $100,000+">$50,000 – $100,000+ (Enterprise Scale)</option>
+            </select>
+            <ChevronDown size={17} className={styles.selectIcon} aria-hidden="true" />
+          </div>
         </div>
       </div>
 

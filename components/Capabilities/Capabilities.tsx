@@ -140,7 +140,7 @@ export default function Capabilities() {
         </div>
 
         {/* Tab Switcher Pills */}
-        <div className={styles.tabBar}>
+        <div className={styles.tabBar} role="tablist" aria-label="Select engineering discipline">
           {disciplines.map((item, idx) => {
             const TabIcon = item.icon;
             const isActive = idx === activeTab;
@@ -151,6 +151,8 @@ export default function Capabilities() {
                 className={`${styles.tabBtn} ${isActive ? styles.tabBtnActive : ''}`}
                 aria-selected={isActive}
                 role="tab"
+                aria-controls={`discipline-panel-${item.id}`}
+                id={`discipline-tab-${item.id}`}
               >
                 <TabIcon size={18} className={styles.tabBtnIcon} />
                 <span className={styles.tabBtnNumber}>{item.num}</span>
@@ -172,6 +174,9 @@ export default function Capabilities() {
           <AnimatePresence mode="wait">
             <motion.div
               key={current.id}
+              id={`discipline-panel-${current.id}`}
+              role="tabpanel"
+              aria-labelledby={`discipline-tab-${current.id}`}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}

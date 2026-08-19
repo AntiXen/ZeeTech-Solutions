@@ -167,7 +167,35 @@ export default function SelectedWork() {
     return () => ctx.revert();
   }, []);
 
+  // Lock body scroll and listen for Escape key when lightbox is open
+  useEffect(() => {
+    if (!activeImageModal) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveImageModal(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeImageModal]);
+
   const current = projects[activeProject];
+
+  const handleImageKeyDown = (e: React.KeyboardEvent, url: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setActiveImageModal(url);
+    }
+  };
 
   return (
     <section id="work" ref={sectionRef} className={`section ${styles.workSection}`}>
@@ -186,7 +214,7 @@ export default function SelectedWork() {
           </div>
 
           {/* Project Switcher Pills */}
-          <div className={styles.projectPills}>
+          <div className={styles.projectPills} role="tablist" aria-label="Select case study">
             {projects.map((p, idx) => {
               const isActive = idx === activeProject;
               return (
@@ -196,6 +224,8 @@ export default function SelectedWork() {
                   className={`${styles.projectPill} ${isActive ? styles.projectPillActive : ''}`}
                   role="tab"
                   aria-selected={isActive}
+                  aria-controls={`case-study-${p.number}`}
+                  id={`tab-${p.number}`}
                 >
                   <span className={styles.pillNumber}>{p.number}</span>
                   <span className={styles.pillName}>{p.name.toUpperCase()}</span>
@@ -216,6 +246,9 @@ export default function SelectedWork() {
         <AnimatePresence mode="wait">
           <motion.div
             key={current.number}
+            id={`case-study-${current.number}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${current.number}`}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
@@ -254,6 +287,10 @@ export default function SelectedWork() {
               <div 
                 className={styles.mainImageWrapper}
                 onClick={() => setActiveImageModal(current.images[0].url)}
+                onKeyDown={(e) => handleImageKeyDown(e, current.images[0].url)}
+                tabIndex={0}
+                role="button"
+                aria-label={`Inspect ${current.name} architecture image: ${current.images[0].caption}`}
               >
                 <Image
                   src={current.images[0].url}
@@ -274,6 +311,10 @@ export default function SelectedWork() {
                 <div 
                   className={styles.subImageWrapper}
                   onClick={() => setActiveImageModal(current.images[1].url)}
+                  onKeyDown={(e) => handleImageKeyDown(e, current.images[1].url)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Inspect ${current.name} screenshot: ${current.images[1].caption}`}
                 >
                   <Image
                     src={current.images[1].url}
@@ -290,6 +331,10 @@ export default function SelectedWork() {
                 <div 
                   className={styles.subImageWrapper}
                   onClick={() => setActiveImageModal(current.images[2].url)}
+                  onKeyDown={(e) => handleImageKeyDown(e, current.images[2].url)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Inspect ${current.name} screenshot: ${current.images[2].caption}`}
                 >
                   <Image
                     src={current.images[2].url}
@@ -375,6 +420,9 @@ export default function SelectedWork() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActiveImageModal(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="High-resolution architecture diagram inspection"
           >
             <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
               <button 

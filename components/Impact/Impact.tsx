@@ -151,7 +151,7 @@ export default function Impact() {
             </div>
             <h3 className={styles.featureTitle}>98% Client Retention & Multi-Year Partnerships</h3>
             <p className={styles.featureDesc}>
-               амOver 90% of our clients continue with ongoing feature development and infrastructure care after their initial product release.
+              Over 90% of our clients continue with ongoing feature development and infrastructure care after their initial product release.
             </p>
             <div className={styles.featureChecklist}>
               <div className={styles.checkRow}>
