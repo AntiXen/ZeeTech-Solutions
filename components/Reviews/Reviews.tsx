@@ -117,7 +117,7 @@ export default function Reviews() {
           </div>
 
           {/* Project Switcher Pills */}
-          <div className={styles.reviewPills}>
+          <div className={styles.reviewPills} role="tablist" aria-label="Select executive perspective">
             {reviews.map((r, idx) => {
               const isActive = idx === activeReview;
               return (
@@ -127,6 +127,8 @@ export default function Reviews() {
                   className={`${styles.reviewPill} ${isActive ? styles.reviewPillActive : ''}`}
                   role="tab"
                   aria-selected={isActive}
+                  aria-controls={`review-panel-${r.id}`}
+                  id={`review-tab-${r.id}`}
                 >
                   <span>{r.projectAssociation}</span>
                   {isActive && (
@@ -146,6 +148,9 @@ export default function Reviews() {
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
+            id={`review-panel-${current.id}`}
+            role="tabpanel"
+            aria-labelledby={`review-tab-${current.id}`}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}

@@ -173,20 +173,30 @@ export default function Technology() {
 
                 {/* Tech Badges List */}
                 <div className={styles.techItemsList}>
-                  {layer.items.map((item) => (
-                    <div
-                      key={item.name}
-                      className={styles.techBadge}
-                      onMouseEnter={() => setHoveredTech(item)}
-                      onMouseLeave={() => setHoveredTech(null)}
-                    >
-                      <div className={styles.badgeLogo}>
-                        <TechLogo name={item.name} />
+                  {layer.items.map((item) => {
+                    const isSelected = hoveredTech?.name === item.name;
+                    return (
+                      <div
+                        key={item.name}
+                        className={`${styles.techBadge} ${isSelected ? styles.techBadgeActive : ''}`}
+                        onMouseEnter={() => setHoveredTech(item)}
+                        onMouseLeave={() => setHoveredTech(null)}
+                        onClick={() => setHoveredTech((prev) => (prev?.name === item.name ? null : item))}
+                        onFocus={() => setHoveredTech(item)}
+                        onBlur={() => setHoveredTech(null)}
+                        tabIndex={0}
+                        role="button"
+                        aria-pressed={isSelected}
+                        aria-label={`${item.name} (${item.category}): ${item.role}`}
+                      >
+                        <div className={styles.badgeLogo}>
+                          <TechLogo name={item.name} />
+                        </div>
+                        <span className={styles.badgeName}>{item.name}</span>
+                        <span className={styles.badgeCategory}>{item.category}</span>
                       </div>
-                      <span className={styles.badgeName}>{item.name}</span>
-                      <span className={styles.badgeCategory}>{item.category}</span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -195,7 +205,7 @@ export default function Technology() {
 
         {/* Dynamic Hover Detail Inspector */}
         {hoveredTech && (
-          <div className={styles.inspectorBar}>
+          <div className={styles.inspectorBar} role="region" aria-live="polite">
             <div className={styles.inspectorLogo}>
               <TechLogo name={hoveredTech.name} />
             </div>
